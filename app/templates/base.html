@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% if title %}
+        <title>{{ title }} - Gan Teva Gear Rental</title>
+        {% else %}
+        <title>Welcome to Gan Teva Gear Rental</title>
+        {% endif %}
+
+        <link rel="stylesheet" href="../static/stylesheets/normalize.css">
+        <link rel="stylesheet" href="../static/stylesheets/skeleton.css">
+        <link rel="stylesheet" href="../static/stylesheets/site.css">
+
+
+    </head>
+    <body>
+    <div class="container">
+        <div class="row">
+            <div class="one-third column offset-by-nine">
+                <a href="/register" class="navlink">Sign Up</a>
+                <a href="/login" class="navlink">Sign In</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-by-five one column">
+                <a href="https://ganteva.org/"><img id="header-img" src="../static/img/gan-teva-logo.webp"></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-by-four five columns"><h3>GanTeva Gear Rental</h3></div>
+        </div>
+        <div class="row">
+            <div id="navbar" class="twelve columns">
+                <a href="/index" class="navlink">Home</a>
+                <a href="/login" class="navlink">Login</a>
+            </div>
+        </div>
+
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content%}{% endblock %}
+    </div>
+    </body>
+</html>
