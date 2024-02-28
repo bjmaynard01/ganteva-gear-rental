@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>Hi, {{ user.username }}!</p>
+    {% if user is not defined %}
+    <p>Please register <a href={{ url_for('register') }}>here.</a></p>
+    {% else %}
+    <p>Hi, {{ user }}!</p>
+    {% endif %}
 {% endblock %}

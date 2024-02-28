@@ -14,8 +14,12 @@ class RegistrationForm(FlaskForm):
     l_name = StringField('Last Name:', validators=[InputRequired()])
     email = EmailField('Email:', validators=[InputRequired(), Email()])
 
-    phone = PhoneNumberField('Phone:', validators=[InputRequired()], region="US", display_format='national')
+    phone = PhoneNumberField('Phone:', validators=[InputRequired()], region="US",\
+                             display_format='national')
     
-    password = PasswordField('Password:', validators=[InputRequired(), EqualTo('confirm_pass', message="Passwords must match."), Length(min=8, message='Password must be at least 8 characters in length.')])
+    password = PasswordField('Password:', validators=[InputRequired(), EqualTo('confirm_pass',\
+                             message="Passwords must match."), Length(min=8, \
+                             message='Password must be at least 8 characters in length.')])
+    
     confirm_pass = PasswordField('Confirm Password:', validators=[InputRequired()])
     submit = SubmitField('Sign Up')

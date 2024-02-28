@@ -1,12 +1,18 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app
+from app import app, models
 from app.forms import LoginForm, RegistrationForm
+from funcs import send_mail
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'username': 'Bryan'}
-    return render_template('index.html', title='Home', user=user)
+    user = request.args.get('user')
+    referrer = request.referrer
+    #user = {'username': 'Bryan'}
+    if user and referrer.endswith('/register'):
+        return render_template('index.html', title='Home', user=user)
+    else:
+        return render_template('index.html', title='Home')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -32,5 +38,9 @@ def register():
             email, 
             registration_form.phone.data, 
             registration_form.password.data))
-        return redirect(url_for('login'))
+        try:
+            send_mail(email, f_name, 'Thank You for Registering with GanTeva\'s Gear Rental Site')
+        except Exception as error:
+            return "Error encountered when trying to send email.", error
+        return redirect(url_for('index', user=f_name))
     return render_template('register.html', title='Sign Up', form=registration_form)
