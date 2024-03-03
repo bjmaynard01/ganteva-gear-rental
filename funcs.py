@@ -1,14 +1,14 @@
-from app import app, mail
+from app import app, mail, db
 from flask import render_template
 
 
-def send_mail(mail_to, to_name, mail_subject):
-    html = render_template('email.html', name=to_name, subject=mail_subject)
+def send_registration_mail(mail_to, to_name, username, cc_list):
+    html = render_template('registration_email.html', name=to_name, username=username)
     try:
         mail.send_message( 
-            recipients=[mail_to], 
-            subject=mail_subject,
-            cc = 'bryan@maynardfolks.com', 
+            recipients=mail_to, 
+            subject='Thank You for Registering with GanTeva\'s Gear Rental Site',
+            cc = [cc_list],
             html=html
         )
     
