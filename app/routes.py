@@ -1,7 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request, send_from_directory
-from app import app, models
+from app import app, db
 from app.forms import LoginForm, RegistrationForm
 from funcs import send_registration_mail
+from werkzeug.security import generate_password_hash
+from app.models import User
+from sqlalchemy.exc import SQLAlchemyError
 
 @app.route('/')
 @app.route('/index')
@@ -34,22 +37,24 @@ def register():
         f_name = registration_form.f_name.data.capitalize()
         l_name = registration_form.l_name.data.capitalize()
         email = registration_form.email.data.lower()
-        username = email
+        phone = registration_form.phone.data
         cc_to = 'bryan@maynardfolks.com'
+        password_hash = generate_password_hash(registration_form.password.data)
         
-        flash('Registration successful for {} with account information of {} {}, {}, {}, and {}'.format(
-            username,
-            f_name, 
-            l_name, 
-            email, 
-            registration_form.phone.data, 
-            registration_form.password.data))
-        
+        flash('Registration successful. Please be on the lookout for a confirmation email')
         try:
-            send_registration_mail([email], f_name, username, cc_to)
+            user = User(fname=f_name, lname=l_name, email=email, phone=phone, password_hash=password_hash)
+            db.session.add(user)
+            db.session.commit()
+
+            try:
+                send_registration_mail([email], f_name, email, cc_to)
             
-        except Exception as error:
-            return "Error encountered when trying to send email.", error
+            except Exception as error:
+                return "Error encountered when trying to send email." + str(error)
+
+        except SQLAlchemyError as error:
+            return "Unable to execute database operations due to: " + str(error)
         
         return redirect(url_for('index', user=f_name))
     
