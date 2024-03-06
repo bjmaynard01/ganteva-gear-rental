@@ -81,7 +81,7 @@ def dump_users_by_lname(lname):
                 data = users_schema.dump(results)
                 return jsonify(status_code=200, result=data)
             else:
-                return jsonify(status_code=200, content={'message': 'no user by that name found'})
+                return jsonify(status_code=200, content={'message': 'No matches found'})
         except SQLAlchemyError as error:
             return jsonify(status_code=500, content={'message': 'Error encountered trying to read user table.' + str(error)})
         
