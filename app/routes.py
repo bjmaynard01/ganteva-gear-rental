@@ -98,9 +98,3 @@ def credits():
 @app.route('/robots.txt')
 def robots():
     return send_from_directory(app.static_folder, request.path[1:])
-
-@app.route('/clear-user-table')
-def clear_users():
-    clear_user_table()
-    flash('User table cleared successfully.')
-    return redirect(url_for('index'))
