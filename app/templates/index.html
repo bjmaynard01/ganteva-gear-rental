@@ -9,7 +9,7 @@
         {% endif %}
     </div>
     {% if current_user.is_anonymous %}
-    <p>Please register <a href={{ url_for('register') }}>here.</a></p>
+    <p>Please register <a href={{ url_for('users.register') }}>here.</a></p>
     {% else %}
     <p>Welcome to your homepage {{ user.fname }}.</p>
     {% endif %}

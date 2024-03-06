@@ -1,28 +1,20 @@
-from flask import render_template, flash, redirect, url_for, request, send_from_directory
-from app import app, db
-from app.forms import LoginForm, RegistrationForm
-from funcs import send_registration_mail, clear_user_table
-from app.models import User
-from sqlalchemy.exc import SQLAlchemyError
+
+from flask import render_template, flash, redirect, url_for, Blueprint
+from app.users.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
+from app import db
 import sqlalchemy as sa
+from sqlalchemy.exc import SQLAlchemyError
+from app.models import User
+from app.users.utils import send_registration_mail, clear_user_table
 
+users = Blueprint('users', __name__)
 
-@app.route('/')
-@app.route('/index')
-def index():
-
-    if current_user.is_authenticated:
-        return render_template('index.html', title='Home', user=current_user)
-    else:
-        return render_template('index.html', title='Home')
-
-
-@app.route('/login', methods=['GET', 'POST'])
+@users.route('/login', methods=['GET', 'POST'])
 def login():
 
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     form = LoginForm()
     
@@ -33,22 +25,22 @@ def login():
         
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
         
         login_user(user, remember=form.remember_me.data)
         flash('Succesfully logged user in.')
         
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     return render_template('login.html', title='Sign In', form=form)
 
-@app.route('/logout')
+@users.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@users.route('/register', methods=['GET', 'POST'])
 def register():
     
     registration_form = RegistrationForm()
@@ -79,28 +71,20 @@ def register():
         
         flash('Registration successful. Please be on the lookout for a confirmation email')
         
-        return redirect(url_for('index', user=f_name))
+        return redirect(url_for('main.index', user=f_name))
     
     return render_template('register.html', title='Sign Up', form=registration_form)
 
-@app.route('/user/<id>')
+@users.route('/user/<id>')
 @login_required
 def user(id):
     user = db.first_or_404(sa.select(User).where(User.id == id))
 
     return render_template('user.html', user=user)
 
-
-@app.route('/credits')
-def credits():
-    return render_template('credits.html')
-
-@app.route('/robots.txt')
-def robots():
-    return send_from_directory(app.static_folder, request.path[1:])
-
-@app.route('/clear-user-table')
+@users.route('/clear-user-table')
+@login_required
 def clear_users():
     clear_user_table()
     flash('User table cleared successfully.')
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
