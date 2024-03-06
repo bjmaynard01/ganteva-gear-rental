@@ -3,3 +3,5 @@
 .flaskenv
 .env
 app.db
+logs*
+.idea/
