@@ -1,10 +1,12 @@
 from app import app, models
-from flask import jsonify, request
-from funcs import clear_user_table
+from flask import jsonify, request, Blueprint
+from app.users.utils import clear_user_table
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from flask_cors import CORS
 from app.models import User, UserSchema
+
+api = Blueprint('api', __name__)
 
 CORS(app)
 

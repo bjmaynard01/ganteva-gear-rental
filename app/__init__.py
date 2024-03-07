@@ -16,6 +16,8 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
+login.login_view = 'users.login'
+login.login_message_category = 'info'
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
@@ -35,7 +37,7 @@ if not app.debug:
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240,
+    file_handler = RotatingFileHandler('logs/gear-rental.log', maxBytes=10240,
                                        backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -44,6 +46,14 @@ if not app.debug:
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('Ganteva Gear Rental App Startup')
+from app.users.routes import users
+from app.gear.routes import gear
+from app.main.routes import main
+from app.api.routes import api
+from app.admin.routes import admin
 
-from app import routes, models, errors
-from app.api import api_routes
+app.register_blueprint(users)
+app.register_blueprint(gear)
+app.register_blueprint(main)
+app.register_blueprint(api)
+app.register_blueprint(admin)
