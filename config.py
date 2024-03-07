@@ -13,3 +13,4 @@ class Config:
     #SERVER_NAME = os.environ.get('SERVER_NAME') or '127.0.0.1:8090'
     API_ADMIN_KEY = os.environ.get('API_ADMIN_KEY')
     API_READ_KEY = os.environ.get('API_READ_KEY')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

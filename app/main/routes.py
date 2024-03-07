@@ -17,6 +17,10 @@ def index():
 def credits():
     return render_template('credits.html')
 
+@main.route('/about')
+def about():
+    return render_template('about.html')
+
 @main.route('/robots.txt')
 def robots():
     return send_from_directory(app.static_folder, request.path[1:])

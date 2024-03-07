@@ -52,8 +52,10 @@ from app.users.routes import users
 from app.gear.routes import gear
 from app.main.routes import main
 from app.api.routes import api
+from app.admin.routes import admin
 
 app.register_blueprint(users)
 app.register_blueprint(gear)
 app.register_blueprint(main)
 app.register_blueprint(api)
+app.register_blueprint(admin)
