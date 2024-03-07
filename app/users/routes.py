@@ -82,9 +82,11 @@ def user(id):
 
     return render_template('user.html', user=user)
 
+<<<<<<< app/users/routes.py:app/users/routes.py
 @users.route('/clear-user-table')
 @login_required
 def clear_users():
     clear_user_table()
     flash('User table cleared successfully.')
     return redirect(url_for('main.index'))
+=======
