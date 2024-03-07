@@ -37,7 +37,7 @@ if not app.debug:
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240,
+    file_handler = RotatingFileHandler('logs/gear-rental.log', maxBytes=10240,
                                        backupCount=10)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -46,8 +46,6 @@ if not app.debug:
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('Ganteva Gear Rental App Startup')
-
-from app import models, errors
 from app.users.routes import users
 from app.gear.routes import gear
 from app.main.routes import main
