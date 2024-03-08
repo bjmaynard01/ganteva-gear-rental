@@ -3,6 +3,7 @@ from flask import render_template
 from app.models import User
 import uuid
 
+
 def send_registration_mail(mail_to, to_name, email, cc):
     html = render_template('registration_email.html', name=to_name, email=email)
     try:
