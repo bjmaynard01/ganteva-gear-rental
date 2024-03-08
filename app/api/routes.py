@@ -1,38 +1,36 @@
-from app import app, models
-from flask import jsonify, request, Blueprint
-from app.users.utils import clear_user_table
+from flask import jsonify, request, current_app
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 from flask_cors import CORS
 from app.models import User, UserSchema
+from app.api import bp as api_bp
+from app.users.utils import clear_user_table
 
-api = Blueprint('api', __name__)
-
-CORS(app)
+CORS(api_bp)
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
-@app.errorhandler(HTTPException)
+@api_bp.errorhandler(HTTPException)
 def missing_parameter(e):
     return jsonify(message="Missing required parameter.", status=602), 602
 
-@app.errorhandler(404)
+@api_bp.errorhandler(404)
 def resource_not_found(e):
     return jsonify(message="Unable to locate requested resource.", status=404), 404
 
-@app.errorhandler(401)
+@api_bp.errorhandler(401)
 def unauthorized(e):
     return jsonify(message="Unauthorized to access this resource", status_code=401), 401
 
-@app.route('/api/users/clear')
+@api_bp.route('/api/users/clear')
 def clear_user_data():
     api_key = request.args.get('api_key')
 
     if api_key is None:
         return missing_parameter('Missing required parameter.')
         
-    if api_key == app.config.get('API_ADMIN_KEY'):
+    if api_key == current_app.config.get('API_ADMIN_KEY'):
         try:
             clear_user_table()
             return jsonify(status_code=200, content={'message': 'Succesfully cleared user database.'})
@@ -42,14 +40,14 @@ def clear_user_data():
     else:
         return unauthorized('Unautorized access attempted.')
     
-@app.route('/api/users/dump')
+@api_bp.route('/api/users/dump')
 def dump_user_table():
     api_key = request.args.get('api_key')
 
     if api_key is None:
         return missing_parameter('Missing required parameter.')
     
-    if api_key == app.config.get('API_ADMIN_KEY') or api_key == app.config.get('API_READ_KEY'):
+    if api_key == current_app.config.get('API_ADMIN_KEY') or api_key == current_app.config.get('API_READ_KEY'):
         try:
             users = User.query.all()
             results = []
@@ -64,14 +62,14 @@ def dump_user_table():
     else:
         return unauthorized('Unauthorized access attempt.')
     
-@app.route('/api/users/<lname>/dump')
+@api_bp.route('/api/users/<lname>/dump')
 def dump_users_by_lname(lname):
     api_key = request.args.get('api_key')
 
     if api_key is None:
         return missing_parameter('Missing required parameter.')
 
-    if api_key == app.config.get('API_ADMIN_KEY') or api_key == app.config.get('API_READ_KEY'):
+    if api_key == current_app.config.get('API_ADMIN_KEY') or api_key == current_app.config.get('API_READ_KEY'):
         try:
             lname = lname.capitalize()
             users = User.query.filter_by(lname=lname).all()

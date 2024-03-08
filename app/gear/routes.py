@@ -1,0 +1,1 @@
+from app.gear import bp as gear_bp

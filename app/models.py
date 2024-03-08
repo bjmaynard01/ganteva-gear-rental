@@ -21,20 +21,13 @@ class Classes(db.Model):
     description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(200))
 
 class User(UserMixin, db.Model):
-    #id = db.Column(db.Integer, primary_key=True)
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    #fname = db.Column(db.String(64), index=True)
     fname: so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
-    #lname = db.Column(db.String(120), index=True)
     lname: so.Mapped[str] = so.mapped_column(sa.String(120), index=True)
-    #email = db.Column(db.String(200), index=True, unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(200), index=True, unique=True)
     phone = db.Column(PhoneNumberType(region='US', max_length=20))
-    #password_hash = db.Column(db.String(256))
     password_hash: so.Mapped[str] = so.mapped_column(sa.String(256))
-    #confirmed = db.Column(db.Boolean, default=False)
     confirmed: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
-    #is_admin = db.Column(db.Boolean, default=False)
     is_admin: so.Mapped[bool] = so.mapped_column(sa.Boolean, default=False)
 
     def set_password(self, password):
