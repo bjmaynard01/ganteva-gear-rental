@@ -1,6 +1,6 @@
 from app import mail, db
 from flask import render_template, current_app
-from app.models import User
+from app.users.models import User
 import uuid
 
 

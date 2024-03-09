@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block head %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {% if title %}
-        <title>{{ title }} - Gan Teva Gear Rental</title>
-        {% else %}
-        <title>Welcome to Gan Teva Gear Rental</title>
-        {% endif %}
+            {% if title %}
+            <title>{{ title }} - Gan Teva Gear Rental</title>
+            {% else %}
+            <title>Welcome to Gan Teva Gear Rental</title>
+            {% endif %}
 
-        <link rel="stylesheet" href="../static/stylesheets/normalize.css">
-        <link rel="stylesheet" href="../static/stylesheets/skeleton.css">
-        <link rel="stylesheet" href="../static/stylesheets/site.css">
+            <link rel="stylesheet" href="../static/stylesheets/normalize.css">
+            <link rel="stylesheet" href="../static/stylesheets/skeleton.css">
+            <link rel="stylesheet" href="../static/stylesheets/site.css">
 
-
+        {% endblock head %}
     </head>
     <body>
     <div class="container">
@@ -27,6 +28,9 @@
                 {% if current_user.is_anonymous %}
                 <a href="{{ url_for('users.login') }}" class="navlink">Sign In</a>
                 <a href="{{ url_for('users.register') }}" class="navlink">Register</a>
+                {% elif current_user.is_admin %}
+                <a href="{{ url_for('admin.admin') }}" class="navlink">Admin</a>
+                <a href="{{ url_for('users.logout') }}" class="navlink">Logout</a>
                 {% else %}
                 <a href="{{ url_for('users.logout') }}" class="navlink">Logout</a>
                 {% endif %}
@@ -61,7 +65,7 @@
         </ul>
         {% endif %}
         {% endwith %}
-        {% block content%}{% endblock %}
+        {% block content%}{% endblock content %}
     </div>
     </body>
 </html>

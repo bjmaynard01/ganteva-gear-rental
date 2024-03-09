@@ -4,7 +4,7 @@ import sqlalchemy as sa
 from app import db
 from app.users import bp as users_bp
 from app.users.forms import LoginForm, RegistrationForm
-from app.models import User
+from app.users.models import User
 from sqlalchemy.exc import SQLAlchemyError
 from app.users.utils import send_registration_mail
 
@@ -23,12 +23,12 @@ def login():
         
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users.login', title='Login'))
         
         login_user(user, remember=form.remember_me.data)
         flash('Succesfully logged user in.')
         
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.index', title='Home'))
     
     return render_template('users/login.html', title='Sign In', form=form)
 
@@ -69,7 +69,7 @@ def register():
         
         flash('Registration successful. Please be on the lookout for a confirmation email')
         
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.index', title='Home'))
     
     return render_template('users/register.html', title='Sign Up', form=registration_form)
 

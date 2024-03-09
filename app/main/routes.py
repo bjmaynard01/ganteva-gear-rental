@@ -15,7 +15,7 @@ def index():
 
 @main_bp.route('/credits')
 def credits():
-    return render_template('credits.html')
+    return render_template('credits.html', title='Credits')
 
 @main_bp.route('/robots.txt')
 def robots():

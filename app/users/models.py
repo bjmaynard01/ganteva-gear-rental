@@ -10,16 +10,6 @@ from flask_marshmallow import Marshmallow
 
 ma = Marshmallow()
 
-class GearCategories(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(80), index=True)
-    description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(200))
-
-class Classes(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(80), index=True)
-    description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(200))
-
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     fname: so.Mapped[str] = so.mapped_column(sa.String(64), index=True)

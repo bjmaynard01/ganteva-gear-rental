@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify, render_template
 from config import Config
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -41,8 +41,20 @@ def create_app(config_class=Config):
     from app.admin import bp as admin_bp
     app.register_blueprint(admin_bp)
 
-    from app.api import bp as api_bp
-    app.register_blueprint(api_bp)
+    #from app.api import bp as api_bp
+    #app.register_blueprint(api_bp)
+
+    from app.api.errors import bp as errors_api
+    app.register_blueprint(errors_api)
+
+    from app.api.users import bp as users_api
+    app.register_blueprint(users_api)
+
+    from app.api.gear import bp as gear_api
+    app.register_blueprint(gear_api)
+
+    from app.api.main import bp as main_api
+    app.register_blueprint(main_api)
 
     if not app.debug:
         if app.config['MAIL_SERVER']:
@@ -71,7 +83,15 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Ganteva Gear Rental App Startup')
+
+        @app.errorhandler(404)
+        def page_not_found(e):
+            if request.path.startswith('/api/'):
+                return jsonify(status_code=404, message='Resource not found'), 404
+            else:
+                return render_template('errors/404.html'), 404
         
     return app
 
-from app import models
+from app.users.models import User
+from app.gear.models import GearCategories

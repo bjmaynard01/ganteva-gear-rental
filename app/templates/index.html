@@ -12,5 +12,12 @@
     <p>Please register <a href="{{ url_for('users.register') }}">here.</a></p>
     {% else %}
     <p>Welcome to your homepage {{ user.fname }}.</p>
+    <ul>
+        <li>{{ user.fname }} {{ user.lname }}</li>
+        <li>{{user.email }}</li>
+        <li>{{ user.phone }}</li>
+        <li>Confirmed:{{ user.confirmed }}</li>
+        <li>Admin: {{ user.is_admin }}</li>
+    </ul>
     {% endif %}
-{% endblock %}
+{% endblock content %}
