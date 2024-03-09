@@ -1,15 +1,15 @@
-from app import app, mail, db
-from flask import render_template
-from app.models import User
+from app import mail, db
+from flask import render_template, current_app
+from app.users.models import User
 import uuid
 
 
 def send_registration_mail(mail_to, to_name, email, cc):
-    html = render_template('registration_email.html', name=to_name, email=email)
+    html = render_template('users/registration_email.html', name=to_name, email=email)
     try:
         mail.send_message( 
             recipients=mail_to, 
-            subject=app.config.get('REGISTRATION_SUBJECT'),
+            subject=current_app.config.get('REGISTRATION_SUBJECT'),
             cc = cc,
             html=html
         )
