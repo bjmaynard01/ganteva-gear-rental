@@ -18,7 +18,7 @@ login.login_view = 'users.login'
 login.login_message = ('Please login to access this page.')
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="./templates")
     app.config.from_object(config_class)
 
     db.init_app(app)
