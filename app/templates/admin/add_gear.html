@@ -1,0 +1,57 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>Add Gear</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row">
+            <div class="offset-by-three three columns">
+                {{ form.item_name.label }}
+                {{ form.item_name(size=32) }}
+                {% for error in form.item_name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-one two columns">
+                {{ form.item_image.label }}
+                {{ form.item_image(size=32) }}
+                {% for error in form.item_image.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row">
+            <div class="offset-by-three three columns">
+                {{ form.item_care.label }}
+                {{ form.item_care(size=32, height=32)}}
+                {% for error in form.item_care.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-one two columns">
+                {{ form.qty.label }}
+                {{ form.qty(size=32) }}
+                {% for errror in form.qty.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row">
+            <div class="offset-by-three three columns">
+                {{ form.categories.label }}
+                {{ form.categories(size=32)}}
+                {% for error in form.categories.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}

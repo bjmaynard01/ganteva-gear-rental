@@ -1,40 +1,71 @@
-from flask import render_template, session
+from flask import render_template, session, url_for, redirect
 from app.admin import bp as admin_bp
 from app.users import utils
 from flask_login import current_user
 from app.users.models import User
+from app.gear.models import GearCategories, GearItem
+from app.gear.forms import GearItemForm, GearCategoryForm
 from sqlalchemy.exc import SQLAlchemyError
 
 @admin_bp.route('/admin')
 def admin():
+    
     if not current_user.is_anonymous:
-        try:
-            user_obj = User.query.filter_by(email=current_user.email).first()
-            if user_obj.is_admin == True:
-                return render_template('admin/admin.html', title='Admin Panel'), 200
-        except SQLAlchemyError as error:
-            return render_template('errors/500.html', title='Internal Error'), 500
+    
+        if current_user.is_admin == True:
+            return render_template('admin/admin.html', title='Admin Panel'), 200
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+    
     else:
-        return render_template('errors/401.html', title='Unauthorized'), 401
+        return redirect(url_for('users.login'))
     
 @admin_bp.route('/admin/gear')
 def gear_admin():
-    try:
-        user_obj = User.query.filter_by(email=current_user.email).first()
-    except SQLAlchemyError as error:
-        return render_template('errors/500.html', title='Internal Error'), 500
-    if user_obj.is_admin == True:
-        return render_template('admin/gear.html', title='Gear Admin'), 200
+    if not current_user.is_anonymous:
+
+        if current_user.is_admin == True:
+            return render_template('admin/admin_gear.html', title='Gear Admin'), 200
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
     else:
-        return render_template('errors/401.html', title='Unauthorized'), 401
+        return redirect(url_for('users.login'))
 
 @admin_bp.route('/admin/gear/categories')
-def gear_categories():
-    try:
-        user_obj = User.query.filter_by(email=current_user.email).first()
-    except SQLAlchemyError as error:
-        return render_template('errors/500.html', title='Internal Error'), 500
-    if user_obj.is_admin == True:
-        return render_template('admin/categories.html', title='Gear Categories'), 200
+def categories_admin():
+
+    if not current_user.is_anonymous:
+    
+        if current_user.is_admin == True:
+            categories = GearCategories.query.all()
+            return render_template('admin/admin_categories.html', title='Gear Categories', categories=categories), 200
+    
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+    
     else:
-        return render_template('errors/401.html', title='Unauthorized'), 401
+        return redirect(url_for('users.login'))
+    
+@admin_bp.route('/admin/gear/add', methods=['GET', 'POST'])
+def add_gear():
+    
+    if not current_user.is_anonymous:
+
+        if current_user.is_admin == True:
+            add_gear_form = GearItemForm()
+
+            if add_gear_form.validate_on_submit:
+                gear_name = add_gear_form.item_name.data
+                gear_image = add_gear_form.item_image.data
+                gear_care = add_gear_form.item_care.data
+                gear_qty = add_gear_form.qty.data
+                geat_categories = add_gear_form.categories.data
+
+
+            return render_template('admin/add_gear.html', title='Add Gear Item', form=add_gear_form)
+        
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+    
+    else:
+        return redirect(url_for('users.login'))

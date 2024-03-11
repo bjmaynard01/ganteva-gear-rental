@@ -1,0 +1,27 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four five columns">
+            <h4>Gear Categories Admin</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+        <div class="twelve columns">
+            <table class="twelve columns">
+                <th style="text-align:center;">Name</th>
+                <th style="text-align:center;">Description</th>
+                <th style="text-align:center;">No. Items</th>
+                {% for category in categories %}
+                <tr>
+                    <td style="text-align: center;">{{ category.name }}</td>
+                    <td style="text-align: center;">{{ category.description }}</td>
+                    <td style="text-align: center;">{{ category.items.all()|length }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+{% endblock content %}
