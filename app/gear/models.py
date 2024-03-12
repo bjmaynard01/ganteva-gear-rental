@@ -13,7 +13,7 @@ gear_categories_ref = db.Table('gear_categories_ref',
 
 class GearCategories(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(80), index=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(80), index=True, unique=True)
     description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(200))
     items = db.relationship('GearItem', secondary=gear_categories_ref, backref=db.backref('categories', lazy='dynamic'), lazy='dynamic')
 

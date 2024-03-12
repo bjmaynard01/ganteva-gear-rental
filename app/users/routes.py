@@ -65,6 +65,7 @@ def register():
                 return "Error encountered when trying to send email." + str(error)
 
         except SQLAlchemyError as error:
+            db.session.rollback()
             return 500
         
         flash('Registration successful. Please be on the lookout for a confirmation email')

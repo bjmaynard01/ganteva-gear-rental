@@ -1,0 +1,41 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>Add Gear Category</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row twelve columns">
+            <div class="offset-by-one three columns">
+                {{ form.name.label }}
+                {{ form.name(size=32) }}
+                {% for error in form.name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-three three columns">
+                {{ form.desc.label }}
+                {{ form.desc(size=32) }}
+                {% for error in form.desc.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-four three columns">
+                {{ form.submit() }}
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}
