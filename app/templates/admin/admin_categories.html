@@ -8,23 +8,30 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <a href="{{ url_for('admin.add_gear_category') }}">Add Category</a>
+        <a href="{{ url_for('admin.add_gear_category') }}" class="addbutton">Add Category</a>
     </div>
     <div class="row twelve columns">
-        <div class="twelve columns">
+        <div class="row twelve columns">
             <table class="twelve columns">
-                <th style="text-align:center;">Name</th>
-                <th style="text-align:center;">Description</th>
-                <th style="text-align:center;">No. Items</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>No. Items</th>
                 {% for category in categories %}
-                <tr>
-                    <td style="text-align: center;">{{ category.name }}</td>
-                    <td style="text-align: center;">{{ category.description }}</td>
-                    <td style="text-align: center;">{{ category.items.all()|length }}</td>
+                <tr class="table-row">
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description }}</td>
+                    <td>{{ category.items.all()|length }}</td>
+                    <td><a href="{{ url_for('admin.delete_category', id=category.id) }}">
+                            <input  class="deletebutton" type="button" value="Delete" onclick="return confirm('Do you want to delete category {{ category.name }}')">
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
+    </div>
+    <div class="row twelve columns">
+        <a href="{{ url_for('admin.add_gear_category') }}">Add Category</a>
     </div>
     
 {% endblock content %}

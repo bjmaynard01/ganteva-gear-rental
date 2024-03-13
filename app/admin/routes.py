@@ -100,3 +100,16 @@ def add_gear():
     
     else:
         return redirect(url_for('users.login'))
+    
+@admin_bp.route('/admin/gear/category/<id>/delete')
+def delete_category(id):
+    category = GearCategories.query.filter_by(id=id).first()
+    try:
+        db.session.delete(category)
+        db.session.commit()
+        flash('Succesfully deleted category {}'.format(category.name))
+        return redirect(url_for('admin.categories_admin'))
+    
+    except SQLAlchemyError as error:
+        db.session.rollback()
+        return render_template('errors/500.html', title='Internal Error'), 500
