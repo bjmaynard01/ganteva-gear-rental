@@ -12,6 +12,7 @@ class GearCategoryForm(FlaskForm):
 
     def validate_name(self, category_name):
         category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
+
         if category is not None:
             raise ValidationError('Category already exists')
 

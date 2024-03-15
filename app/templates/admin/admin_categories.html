@@ -8,7 +8,9 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <a href="{{ url_for('admin.add_gear_category') }}" class="addbutton">Add Category</a>
+        <form action="{{ url_for('admin.add_gear_category') }}">
+            <input type="submit" class="button add" value="Add Category">
+        </form>
     </div>
     <div class="row twelve columns">
         <div class="row twelve columns">
@@ -22,7 +24,7 @@
                     <td>{{ category.description }}</td>
                     <td>{{ category.items.all()|length }}</td>
                     <td><a href="{{ url_for('admin.delete_category', id=category.id) }}">
-                            <input  class="deletebutton" type="button" value="Delete" onclick="return confirm('Do you want to delete category {{ category.name }}')">
+                            <input  class="button delete" type="button" value="Delete" onclick="return confirm('Do you want to delete category {{ category.name }}')">
                         </a>
                     </td>
                 </tr>
@@ -31,7 +33,9 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <a href="{{ url_for('admin.add_gear_category') }}">Add Category</a>
+        <form action="{{ url_for('admin.add_gear_category') }}">
+            <input type="submit" class="button add" value="Add Category">
+        </form>
     </div>
     
 {% endblock content %}

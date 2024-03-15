@@ -221,7 +221,17 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
-
+.button.delete {
+  height:50px;
+  margin-top: 10px;
+  color: red;
+  border-color: red;
+}
+.button.add {
+  height: 50px;
+  color: #1EAEDB;
+  border-color: #1EAEDB;
+}
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -325,7 +335,7 @@ pre > code {
 th,
 tr,
 td {
-  padding: 12px 15px 15px 15px;
+  padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #E1E1E1; }
 th:first-child,

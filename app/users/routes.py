@@ -77,6 +77,6 @@ def register():
 @users_bp.route('/user/<id>')
 @login_required
 def user(id):
-    user = db.first_or_404(sa.select(User).where(User.id == id))
+    user = db.first_or_404(sa.select(User).where(User.id == current_user.id))
 
     return render_template('users/user.html', user=user)

@@ -8,7 +8,9 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <a href="{{ url_for('admin.add_gear' ) }}">Add Gear</a>
+        <form action="{{ url_for('admin.add_gear') }}">
+            <input type="submit" value="Add Gear" class="button add">
+        </form>
     </div>
 
 {% endblock content %}
