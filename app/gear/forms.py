@@ -10,11 +10,21 @@ class GearCategoryForm(FlaskForm):
     desc = StringField('Category Description:')
     submit = SubmitField('Create Category')
 
-    def validate_name(self, category_name):
+    def validate_name(self, name):
         category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
-
         if category is not None:
             raise ValidationError('Category already exists')
+            
+class UpdateGearCategoryForm(FlaskForm):
+    name = StringField('Category Name:', validators=[InputRequired()])
+    desc = StringField('Category Description:')
+    submit = SubmitField('Update Category')
+
+    #def validate_name(self, name):
+    #    if self.name.data.capitalize() != name:
+    #        category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
+    #        if category is not None:
+    #            raise ValidationError('Category already exists')
 
 
 class GearItemForm(FlaskForm):

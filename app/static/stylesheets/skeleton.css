@@ -232,6 +232,11 @@ input[type="button"].button-primary:focus {
   color: #1EAEDB;
   border-color: #1EAEDB;
 }
+.button.edit {
+  height: 50px;
+  color: #1EAEDB;
+  border-color: #1EAEDB;
+}
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */

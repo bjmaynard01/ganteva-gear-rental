@@ -5,7 +5,7 @@ from app.users import utils
 from flask_login import current_user, login_required
 from app.users.models import User
 from app.gear.models import GearCategories, GearItem
-from app.gear.forms import GearItemForm, GearCategoryForm
+from app.gear.forms import GearItemForm, GearCategoryForm, UpdateGearCategoryForm
 from sqlalchemy.exc import SQLAlchemyError
 
 @admin_bp.route('/admin')
@@ -34,23 +34,6 @@ def gear_admin():
     else:
         flash('You must login to administer gear.')
         return redirect(url_for('users.login'))
-
-@admin_bp.route('/admin/gear/categories')
-@login_required
-def categories_admin():
-
-    if not current_user.is_anonymous:
-    
-        if current_user.is_admin == True:
-            categories = GearCategories.query.all()
-            return render_template('admin/admin_categories.html', title='Gear Categories', categories=categories), 200
-    
-        else:
-            return render_template('errors/401.html', title='Unauthorized'), 401
-    
-    else:
-        flash('You must login to administer gear categories')
-        return redirect(url_for('users.login'))
     
 @admin_bp.route('/admin/gear/add', methods=['GET', 'POST'])
 @login_required
@@ -78,7 +61,24 @@ def add_gear():
         flash('You must login to add gear items.')
         return redirect(url_for('users.login'))
     
-@admin_bp.route('/admin/gear/categories/add', methods=['GET', 'POST'])
+@admin_bp.route('/admin/gear/categories')
+@login_required
+def categories_admin():
+
+    if not current_user.is_anonymous:
+    
+        if current_user.is_admin == True:
+            categories = GearCategories.query.all()
+            return render_template('admin/admin_categories.html', title='Gear Categories', categories=categories), 200
+    
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+    
+    else:
+        flash('You must login to administer gear categories')
+        return redirect(url_for('users.login'))
+    
+@admin_bp.route('/admin/gear/category/add', methods=['GET', 'POST'])
 @login_required
 def add_gear_category():
 
@@ -118,22 +118,26 @@ def update_category(id):
     if not current_user.is_anonymous:
 
         if current_user.is_admin:
-            edit_category_form = GearCategoryForm()
             try:
                 category = GearCategories.query.get_or_404(id)
-                edit_category_form.name.data = category.name
-                edit_category_form.desc.data = category.description
 
-                if edit_category_form.validate_on_submit():
-                    category.name = edit_category_form.name.data
-                    category.description = edit_category_form.desc.data
-                    db.session.commit()
-
-                return render_template('admin/add_category.html', title='Update Category', form=edit_category_form,
-                                       legend='Update Category')
-            
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
+
+            form = UpdateGearCategoryForm()
+        
+            if form.validate_on_submit():
+                category.name = form.name.data.capitalize()
+                category.description = form.desc.data.capitalize()
+                db.session.commit()
+                flash('Successfully updated category {}'.format(category.name))
+                return redirect(url_for('admin.categories_admin'))
+        
+            form.name.data = category.name
+            form.desc.data = category.description
+                
+            return render_template('admin/add_category.html', title='Update Category', form=form,
+                                       legend='Update Category'), 200
             
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
