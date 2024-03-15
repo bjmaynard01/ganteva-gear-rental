@@ -4,6 +4,7 @@ from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import InputRequired, ValidationError
 from app.gear.utils import get_category_names
 from app.gear.models import GearCategories, GearItem
+import sys
 
 class GearCategoryForm(FlaskForm):
     name = StringField('Category Name:', validators=[InputRequired()])
@@ -20,11 +21,11 @@ class UpdateGearCategoryForm(FlaskForm):
     desc = StringField('Category Description:')
     submit = SubmitField('Update Category')
 
-    #def validate_name(self, name):
-    #    if self.name.data.capitalize() != name:
-    #        category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
-    #        if category is not None:
-    #            raise ValidationError('Category already exists')
+    def validate_name(self, name):
+        category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
+        if name.data != category.name:
+            if category is not None:
+                raise ValidationError('Category already exists')
 
 
 class GearItemForm(FlaskForm):

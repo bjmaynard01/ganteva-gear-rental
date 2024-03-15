@@ -15,9 +15,9 @@
     <div class="row twelve columns">
         <div class="row twelve columns">
             <table class="twelve columns">
-                <th style="text-align:center;">Name</th>
-                <th style="text-align:center;">Description</th>
-                <th style="text-align:center;">No. Items</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>No. Items</th>
                 {% for category in categories %}
                 <tr class="table-row">
                     <td>{{ category.name }}</td>
@@ -27,10 +27,9 @@
                         <a href="{{ url_for('admin.update_category', id=category.id) }}">
                             <input class="button edit" type="button" value="Update">
                         </a>
-                    </td>
-                    <td>
                         <a href="{{ url_for('admin.delete_category', id=category.id) }}">
-                            <input  class="button delete" type="button" value="Delete" onclick="return confirm('Do you want to delete category {{ category.name }}')">
+                            <input  class="button delete" type="button" value="Delete" 
+                            onclick="return confirm('Do you want to delete category {{ category.name }}')">
                         </a>
                     </td>
                 </tr>

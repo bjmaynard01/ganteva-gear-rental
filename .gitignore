@@ -5,4 +5,7 @@
 app.db
 logs*
 .idea/
+*.ps1
+*.sh
+*.cmd
 /static/img/gear/*
