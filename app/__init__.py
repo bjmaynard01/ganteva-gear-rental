@@ -74,7 +74,7 @@ def create_app(config_class=Config):
 
         if not os.path.exists('logs'):
             os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240,
+        file_handler = RotatingFileHandler('logs/gear-rental.log', maxBytes=10240,
                                            backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -83,13 +83,6 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Ganteva Gear Rental App Startup')
-
-        @app.errorhandler(404)
-        def page_not_found(e):
-            if request.path.startswith('/api/'):
-                return jsonify(status_code=404, message='Resource not found'), 404
-            else:
-                return render_template('errors/404.html'), 404
         
     return app
 

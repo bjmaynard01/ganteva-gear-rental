@@ -7,6 +7,7 @@ from app.users.models import User
 from app.gear.models import GearCategories, GearItem
 from app.gear.forms import GearItemForm, GearCategoryForm, UpdateGearCategoryForm
 from sqlalchemy.exc import SQLAlchemyError
+from app.gear.utils import save_img
 
 @admin_bp.route('/admin')
 @login_required
@@ -28,7 +29,8 @@ def gear_admin():
     if not current_user.is_anonymous:
 
         if current_user.is_admin == True:
-            return render_template('admin/admin_gear.html', title='Gear Admin'), 200
+            items = GearItem.query.all()
+            return render_template('admin/admin_gear.html', title='Gear Admin', items=items), 200
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
     else:
@@ -45,12 +47,36 @@ def add_gear():
             add_gear_form = GearItemForm()
 
             if add_gear_form.validate_on_submit():
-                gear_name = add_gear_form.item_name.data.capitalize()
-                gear_image = add_gear_form.item_image.data
-                gear_care = add_gear_form.item_care.data
-                gear_qty = add_gear_form.qty.data
-                geat_categories = add_gear_form.categories.data
 
+        
+                gear_name = add_gear_form.name.data.capitalize()
+                gear_care = add_gear_form.care_instructions.data
+                gear_qty = add_gear_form.qty.data
+                gear_categories = add_gear_form.categories.data
+    
+                if add_gear_form.image.data:
+                    picture_file, thumb_file = save_img(add_gear_form.image.data)
+                    gear_image = picture_file
+                    gear_thumb = thumb_file
+                    
+                else:
+                    gear_image = None
+                
+
+                try:
+                    item = GearItem(name=gear_name, image=gear_image, img_thumb=gear_thumb, care_instructions=gear_care, qty=gear_qty)
+
+                    for category in gear_categories:
+                        item.categories.append(category)
+                    
+                    db.session.add(item)
+                    db.session.commit()
+                    
+                    flash(f"New gear item added: {gear_name}")
+                    return redirect(url_for('admin.gear_admin'))
+                
+                except SQLAlchemyError as error:
+                    return render_template('errors/500.html', title='Internal Error'), 500
 
             return render_template('admin/add_gear.html', title='Add Gear Item', form=add_gear_form)
         
@@ -60,6 +86,16 @@ def add_gear():
     else:
         flash('You must login to add gear items.')
         return redirect(url_for('users.login'))
+    
+@admin_bp.route('/admin/gear/<id>/update')
+@login_required
+def update_item(id):
+    return redirect(url_for('admin.gear_admin'))
+
+@admin_bp.route('/admin/gear/<id>/delete')
+@login_required
+def delete_item(id):
+    return redirect(url_for('admin.gear_admin'))
     
 @admin_bp.route('/admin/gear/categories')
 @login_required

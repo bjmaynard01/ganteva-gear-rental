@@ -8,28 +8,28 @@
         </div>
     </div>
     <div class="row twelve columns">
-    <form action="" method="post" novalidate>
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
         {{ form.hidden_tag() }}
         <div class="row twelve columns">
             <div class="three columns">
-                {{ form.item_name.label }}
-                {{ form.item_name(size=32) }}
-                {% for error in form.item_name.errors %}
+                {{ form.name.label }}
+                {{ form.name(size=32) }}
+                {% for error in form.name.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
             <div class="offset-by-four three columns">
-                {{ form.item_image.label }}
-                {{ form.item_image(size=32) }}
-                {% for error in form.item_image.errors %}
+                {{ form.image.label }}
+                {{ form.image(size=32) }}
+                {% for error in form.image.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
         <div class="row twelve columns">
             <div class="three columns">
-                {{ form.item_care.label }}
-                {{ form.item_care(style="height: 300px;", cols="60")}}
-                {% for error in form.item_care.errors %}
+                {{ form.care_instructions.label }}
+                {{ form.care_instructions(style="height: 300px; resize: none;", cols="45")}}
+                {% for error in form.care_instructions.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
@@ -40,15 +40,13 @@
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
-        <div class="row twelve columns">
-            <div class="three columns">
+            <div class="offset-by-four three columns">
                 {{ form.categories.label }}
                 {{ form.categories(style="height: 100px; width:150px")}}
                 {% for error in form.categories.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
-        </div>
         <div class="row twelve columns">
             <hr>
         </div>

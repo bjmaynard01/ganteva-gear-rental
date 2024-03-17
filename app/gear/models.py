@@ -27,8 +27,9 @@ class GearCategoriesSchema(ma.Schema):
 
 class GearItem(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
-    name: so.Mapped[int] = so.mapped_column(sa.String(64), index=True)
+    name: so.Mapped[int] = so.mapped_column(sa.String(64), index=True, unique=True)
     image: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
+    img_thumb: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
     care_instructions: so.Mapped[str] = so.mapped_column(sa.Text, nullable=True)
     qty: so.Mapped[int] = so.mapped_column(default=0)
 

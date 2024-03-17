@@ -12,5 +12,42 @@
             <input type="submit" value="Add Gear" class="button add">
         </form>
     </div>
+    <div class="row twelve columns">
+        <table class="twelve columns">
+            <th>Name</th>
+            <th>Image</th>
+            <th>Care <br>Instructions</th>
+            <th>Qty</th>
+            <th>Categories</th>
+            {% for item in items %}
+            <tr class="table-row">
+                <td>{{ item.name }}</td>
+                <!--<td>{{ item.image }}</td>-->
+                <td><img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}"></td>
+                {% if item.care_instructions %}
+                <td>Y</td>
+                {% else %}
+                <td>N</td>
+                {% endif %}
+                <td>{{ item.qty }}</td>
+                <td>{{ item.categories.all()|length }}</td>
+                <td>
+                    <a href="{{ url_for('admin.update_item', id=item.id) }}"> 
+                        <input class="button edit" type="button" value="Update">
+                    </a>
+                    <a href="{{ url_for('admin.delete_item', id=item.id) }}">
+                        <input  class="button delete" type="button" value="Delete" 
+                        onclick="return confirm('Do you want to delete item {{ item.name }}')">
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row twelve columns">
+        <form action="{{ url_for('admin.add_gear') }}">
+            <input type="submit" value="Add Gear" class="button add">
+        </form>
+    </div>
 
 {% endblock content %}
