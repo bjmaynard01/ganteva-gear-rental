@@ -27,9 +27,20 @@ def save_img(uploaded_image):
 
     return image_name, thumb_name
 
-def clear_item_table():
+def clear_gear_table():
     items = GearItem.query.all()
     for item in items:
         db.session.delete(item)
     db.session.commit()
+
+    pic_dir = os.path.join(current_app.root_path, 'static/img/gear')
+    pics = os.listdir(pic_dir)
+    for pic in pics:
+        if pic.endswith(".jpg") or pic.endswith(".png"):
+            os.remove(os.path.join(pic_dir, pic))
+
+
+
+
+
 

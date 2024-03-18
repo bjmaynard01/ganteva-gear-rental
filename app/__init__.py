@@ -41,6 +41,12 @@ def create_app(config_class=Config):
     from app.admin import bp as admin_bp
     app.register_blueprint(admin_bp)
 
+    from app.admin.gear import bp as admin_gear_bp
+    app.register_blueprint(admin_gear_bp)
+
+    from app.admin.users import bp as admin_users_bp
+    app.register_blueprint(admin_users_bp)
+
     #from app.api import bp as api_bp
     #app.register_blueprint(api_bp)
 

@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <form action="{{ url_for('admin.add_gear_category') }}">
+        <form action="{{ url_for('admin_gear.add_gear_category') }}">
             <input type="submit" class="button add" value="Add Category">
         </form>
     </div>
@@ -22,12 +22,12 @@
                 <tr class="table-row">
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
-                    <td>{{ category.items.all()|length }}</td>
+                    <td>{{ category_items }}</td>
                     <td>
-                        <a href="{{ url_for('admin.update_category', id=category.id) }}">
+                        <a href="{{ url_for('admin_gear.update_category', id=category.id) }}">
                             <input class="button edit" type="button" value="Update">
                         </a>
-                        <a href="{{ url_for('admin.delete_category', id=category.id) }}">
+                        <a href="{{ url_for('admin_gear.delete_category', id=category.id) }}">
                             <input  class="button delete" type="button" value="Delete" 
                             onclick="return confirm('Do you want to delete category {{ category.name }}')">
                         </a>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <form action="{{ url_for('admin.add_gear_category') }}">
+        <form action="{{ url_for('admin_gear.add_gear_category') }}">
             <input type="submit" class="button add" value="Add Category">
         </form>
     </div>
