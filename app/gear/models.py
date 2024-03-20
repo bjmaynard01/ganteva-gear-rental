@@ -18,7 +18,7 @@ class GearCategories(db.Model):
     items = db.relationship('GearItem', secondary=gear_categories_ref, backref=db.backref('categories', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
-        return f"Gear_Category('{self.id}', '{self.name}', '{self.description}', '{self.items}')"
+        return f"Gear_Category('{self.id}', '{self.name}', '{self.description}')"
 
 class GearCategoriesSchema(ma.Schema):
     class Meta:
@@ -36,6 +36,10 @@ class GearItem(db.Model):
     def __repr__(self):
         return f"Gear_Item('{self.id}', '{self.name}', '{self.qty}')"
     
+
+class GearItemSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'image', 'img_thumb', 'care_instructions', 'qty')
     #@staticmethod
     #def default_cat():
         
