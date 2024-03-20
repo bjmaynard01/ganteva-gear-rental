@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from app.gear.models import GearCategories, GearItem
 from app.gear.forms import GearItemForm, GearCategoryForm, UpdateGearCategoryForm
 from sqlalchemy.exc import SQLAlchemyError
-from app.admin.gear.utils import save_img
+from app.admin.gear.utils import save_img, delete_gear_img
 
 @admin_gear_bp.route('/admin/gear')
 @login_required
@@ -79,7 +79,30 @@ def update_item(id):
 @admin_gear_bp.route('/admin/gear/<id>/delete')
 @login_required
 def delete_item(id):
-    return redirect(url_for('admin_gear.gear_admin'))
+    if not current_user.is_anonymous:
+
+        if current_user.is_admin:
+            
+            try:
+                item = GearItem.query.get_or_404(id)
+                img_file = item.image
+                img_thumb = item.img_thumb
+                db.session.delete(item)
+                db.session.commit()
+                delete_gear_img(img_file, img_thumb)
+                flash('Succesfully deleted item {}'.format(item.name))
+                return redirect(url_for('admin_gear.gear_admin'))
+    
+            except SQLAlchemyError as error:
+                db.session.rollback()
+                return render_template('errors/500.html', title='Internal Error'), 500
+            
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+        
+    else:
+        flash('You must login to delete gear categories.')
+        return redirect(url_for('users.login'))
     
 @admin_gear_bp.route('/admin/gear/categories')
 @login_required
@@ -88,19 +111,12 @@ def categories_admin():
     if not current_user.is_anonymous:
     
         if current_user.is_admin == True:
-            query = GearCategories.query.all()
-            categories = {}
-            for category in query:
-                items = category.items.all()
-                category_items = 0
-                for item in items:
-                    category_items += item.qty
-                categories[category] = category_items
-            
+            categories = GearCategories.query.all()
 
-            flash(categories)
+            #need a join statement that pulls and adds up qtys of items and displays, but not required
+
             return render_template('admin/gear/admin_categories.html', 
-                                   title='Gear Categories', categories=categories, category_items=category_items), 200
+                                   title='Gear Categories', categories=categories), 200
     
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
@@ -168,7 +184,7 @@ def update_category(id):
             form.desc.data = category.description
                 
             return render_template('admin/gear/add_category.html', title='Update Category', form=form,
-                                       legend='Update Category'), 200
+                                       legend='Update Category', category=category), 200
             
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401

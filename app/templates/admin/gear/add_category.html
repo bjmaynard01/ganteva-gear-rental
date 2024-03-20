@@ -32,6 +32,14 @@
             <div class="offset-by-four three columns">
                 {{ form.submit() }}
             </div>
+            <div class="two columns">
+                {% if legend == 'Update Category' %}
+                <a href="{{ url_for('admin_gear.delete_category', id=category.id) }}">
+                    <input  class="button delete" type="button" value="Delete" 
+                    onclick="return confirm('Do you want to delete category {{ category.name }}')">
+                </a>
+            {% endif %}
+            </div>
         </div>
         </div>
         </div>
