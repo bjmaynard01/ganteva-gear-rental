@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <form action="{{ url_for('admin.add_gear') }}">
+        <form action="{{ url_for('admin_gear.add_gear') }}">
             <input type="submit" value="Add Gear" class="button add">
         </form>
     </div>
@@ -32,10 +32,10 @@
                 <td>{{ item.qty }}</td>
                 <td>{{ item.categories.all()|length }}</td>
                 <td>
-                    <a href="{{ url_for('admin.update_item', id=item.id) }}"> 
+                    <a href="{{ url_for('admin_gear.update_item', id=item.id) }}"> 
                         <input class="button edit" type="button" value="Update">
                     </a>
-                    <a href="{{ url_for('admin.delete_item', id=item.id) }}">
+                    <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
                         <input  class="button delete" type="button" value="Delete" 
                         onclick="return confirm('Do you want to delete item {{ item.name }}')">
                     </a>
@@ -45,7 +45,7 @@
         </table>
     </div>
     <div class="row twelve columns">
-        <form action="{{ url_for('admin.add_gear') }}">
+        <form action="{{ url_for('admin_gear.add_gear') }}">
             <input type="submit" value="Add Gear" class="button add">
         </form>
     </div>

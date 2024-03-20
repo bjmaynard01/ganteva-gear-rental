@@ -3,8 +3,9 @@ from wtforms import StringField, SubmitField, FileField, TextAreaField
 from flask_wtf.file import FileAllowed
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import InputRequired, ValidationError
-from app.gear.utils import get_category_names
+from app.admin.gear.utils import get_category_names
 from app.gear.models import GearCategories, GearItem
+from flask import flash
 import sys
 
 class GearCategoryForm(FlaskForm):
@@ -24,8 +25,8 @@ class UpdateGearCategoryForm(FlaskForm):
 
     def validate_name(self, name):
         category = GearCategories.query.filter_by(name=self.name.data.capitalize()).first()
-        if name.data != category.name:
-            if category is not None:
+        if category is not None:
+            if name.data != category.name.capitalize():
                 raise ValidationError('Category already exists')
 
 
