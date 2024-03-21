@@ -4,7 +4,7 @@
 
     <div class="row twelve columns">
         <div class="offset-by-four four columns">
-            <h4>Add Gear</h4>
+            <h4>{{ legend }}</h4>
         </div>
     </div>
     <div class="row twelve columns">
@@ -20,10 +20,13 @@
             </div>
             <div class="offset-by-four three columns">
                 {{ form.image.label }}
-                {{ form.image(size=32) }}
+                {{ form.image(size=32) }}{% if legend == "Update Item" %}<p>Upload new photo to change</p>{% endif %}
                 {% for error in form.image.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
+                {% if legend == "Update Item" %}
+                    <p><img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}"></p>
+                {% endif %}
             </div>
         <div class="row twelve columns">
             <div class="three columns">
@@ -53,6 +56,12 @@
         <div class="row twelve columns">
             <div class="offset-by-four three columns">
                 {{ form.submit() }}
+                {% if legend == 'Update Item' %}
+                <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
+                    <input  class="button delete" type="button" value="Delete" 
+                    onclick="return confirm('Do you want to delete category {{ item.name }}')">
+                </a>
+                {% endif %}
             </div>
         </div>
         </div>

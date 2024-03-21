@@ -41,10 +41,13 @@ def clear_gear_table():
 
 def delete_gear_img(image, thumb):
     img_path = os.path.join(current_app.root_path, 'static/img/gear')
-    for img in image, thumb:
-        if img.endswith(".jpg") or img.endswith(".png"):
-            os.remove(os.path.join(img_path, img))
+    if image.endswith(".jpg") or image.endswith(".png"):
+        os.remove(os.path.join(img_path, image))
+    if thumb.endswith(".jpg") or thumb.endswith(".png"):
+        os.remove(os.path.join(img_path, thumb))
 
+def get_item_img_path(item):
+    return os.path.join(current_app.root_path, 'static/img/gear', item)
 
 
 

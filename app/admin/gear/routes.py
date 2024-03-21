@@ -1,11 +1,12 @@
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect, flash, current_app
 from app import db
 from app.admin.gear import bp as admin_gear_bp
 from flask_login import current_user, login_required
 from app.gear.models import GearCategories, GearItem
-from app.gear.forms import GearItemForm, GearCategoryForm, UpdateGearCategoryForm
+from app.gear.forms import GearItemForm, GearCategoryForm, UpdateGearCategoryForm, UpdateGearItemForm
 from sqlalchemy.exc import SQLAlchemyError
-from app.admin.gear.utils import save_img, delete_gear_img
+from app.admin.gear.utils import save_img, delete_gear_img, get_item_img_path
+import os
 
 @admin_gear_bp.route('/admin/gear')
 @login_required
@@ -62,7 +63,7 @@ def add_gear():
                 except SQLAlchemyError as error:
                     return render_template('errors/500.html', title='Internal Error'), 500
 
-            return render_template('admin/gear/add_gear.html', title='Add Gear Item', form=add_gear_form)
+            return render_template('admin/gear/add_gear.html', title='Add Gear Item', form=add_gear_form, legend='Add Gear')
         
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
@@ -71,10 +72,56 @@ def add_gear():
         flash('You must login to add gear items.')
         return redirect(url_for('users.login'))
     
-@admin_gear_bp.route('/admin/gear/<id>/update')
+@admin_gear_bp.route('/admin/gear/<id>/update', methods=['GET', 'POST'])
 @login_required
 def update_item(id):
-    return redirect(url_for('admin_gear.gear_admin'))
+    if not current_user.is_anonymous:
+
+        if current_user.is_admin:
+            try:
+                item = GearItem.query.get_or_404(id)
+
+            except SQLAlchemyError as error:
+                return render_template('errors/500.html', title='Internal Error'), 500
+
+            update_gear_form = UpdateGearItemForm()
+
+            
+        
+            if update_gear_form.validate_on_submit():
+                item.name = update_gear_form.name.data.capitalize()
+                if update_gear_form.image.data:
+                    delete_gear_img(item.image, item.img_thumb)
+                    picture_file, thumb_file = save_img(update_gear_form.image.data)
+                    gear_image = picture_file
+                    gear_thumb = thumb_file
+                    item.image = gear_image
+                    item.img_thumb = gear_thumb
+                item.care_instructions = update_gear_form.care_instructions.data
+                item.qty = update_gear_form.qty.data
+                item.categories = update_gear_form.categories.data
+                try:
+                    db.session.add(item)
+                    db.session.commit()
+                    flash('Successfully updated item {}'.format(item.name))
+                    return redirect(url_for('admin_gear.gear_admin'))
+                except SQLAlchemyError as error:
+                    return 500
+        
+            update_gear_form.name.data = item.name
+            update_gear_form.care_instructions.data = item.care_instructions
+            update_gear_form.qty.data = item.qty
+            update_gear_form.categories.data = item.categories
+                
+            return render_template('admin/gear/add_gear.html', title='Update Item', form=update_gear_form,
+                                       legend='Update Item', item=item), 200
+            
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+        
+    else:
+        flash('You must login to update gear categories.')
+        return redirect(url_for('users.login'))
 
 @admin_gear_bp.route('/admin/gear/<id>/delete')
 @login_required
@@ -90,7 +137,7 @@ def delete_item(id):
                 db.session.delete(item)
                 db.session.commit()
                 delete_gear_img(img_file, img_thumb)
-                flash('Succesfully deleted item {}'.format(item.name))
+                flash('Successfully deleted item {}'.format(item.name))
                 return redirect(url_for('admin_gear.gear_admin'))
     
             except SQLAlchemyError as error:

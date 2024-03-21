@@ -42,3 +42,17 @@ class GearItemForm(FlaskForm):
         item = GearItem.query.filter_by(name=self.name.data.capitalize()).first()
         if item is not None:
             raise ValidationError('Item already exists')
+        
+class UpdateGearItemForm(FlaskForm):
+    name = StringField('Item Name:', validators=[InputRequired()])
+    image = FileField('Item Image:', validators=[FileAllowed(['jpg', 'png'])]) # add validators later, multiple regex to limit extensions
+    care_instructions = TextAreaField('Care Instructions:')
+    qty = StringField('Quantity:')
+    categories = QuerySelectMultipleField('Categories:', query_factory=get_category_names, get_label="name")                      
+    submit = SubmitField('Update')
+
+    def validate_name(self, name):
+        item = GearItem.query.filter_by(name=self.name.data.capitalize()).first()
+        if item is not None:
+            if name.data != item.name.capitalize():
+                raise ValidationError('Item already exists')
