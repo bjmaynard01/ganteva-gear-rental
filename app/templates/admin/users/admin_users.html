@@ -1,0 +1,44 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>Manage Users</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    </div>
+    <div class="row twelve columns">
+        <table class="twelve columns">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Confirmed</th>
+            <th>Admin</th>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.fname }}</td>
+                    <td>{{ user.lname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.confirmed }}</td>
+                    <td>{{ user.is_admin }}</td>
+                    <td>
+                        <a href="">
+                            <input class="button edit" type="button" value="Edit" style="padding-left: 20%; padding-right: 20%">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="">
+                            <input class="button delete" type="button" value="Delete" style="padding-left: 10%; padding-right: 10%" >
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+{% endblock content %}
