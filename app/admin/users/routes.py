@@ -18,7 +18,22 @@ def admin_users():
             return render_template('admin/users/admin_users.html', title='User Admin', users=users)
         
         else:
-            return 401
+            return render_template('errors/401.html', title='Unauthorized'), 401
     else:
         flash('You must login to administer users.')
+        return redirect(url_for('users.login'))
+
+@admin_users_bp.route('/admin/users/<id>/update')
+@login_required
+def update_user(id):
+    if not current_user.is_anonymous:
+        
+        if current_user.is_admin == True:
+            user = User.query.get_or_404(id)
+            
+        else:
+            return render_template('errors/401.html', title='Unauthorized'), 401
+        
+    else:
+        flash('You must be logged in as admin to update user accounts.')
         return redirect(url_for('users.login'))
