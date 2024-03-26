@@ -32,7 +32,7 @@ class UpdateGearCategoryForm(FlaskForm):
 
 class GearItemForm(FlaskForm):
     name = StringField('Item Name:', validators=[InputRequired()])
-    image = FileField('Item Image:', validators=[FileAllowed(['jpg', 'png'])]) # add validators later, multiple regex to limit extensions
+    image = FileField('Item Image:', validators=[FileAllowed(['jpg', 'png', 'jpeg'])]) # add validators later, multiple regex to limit extensions
     care_instructions = TextAreaField('Care Instructions:')
     qty = StringField('Quantity:')
     categories = QuerySelectMultipleField('Categories:', query_factory=get_category_names, get_label="name")                      
@@ -45,7 +45,7 @@ class GearItemForm(FlaskForm):
         
 class UpdateGearItemForm(FlaskForm):
     name = StringField('Item Name:', validators=[InputRequired()])
-    image = FileField('Item Image:', validators=[FileAllowed(['jpg', 'png'])]) # add validators later, multiple regex to limit extensions
+    image = FileField('Item Image:', validators=[FileAllowed(['jpg', 'png', 'jpeg'])]) # add validators later, multiple regex to limit extensions
     care_instructions = TextAreaField('Care Instructions:')
     qty = StringField('Quantity:')
     categories = QuerySelectMultipleField('Categories:', query_factory=get_category_names, get_label="name")                      
