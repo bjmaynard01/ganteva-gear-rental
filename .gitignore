@@ -9,3 +9,5 @@ logs*
 *.sh
 *.cmd
 static/img/gear/*.jpg
+static/img/gear/*.jpeg
+static/img/gear/*.png
