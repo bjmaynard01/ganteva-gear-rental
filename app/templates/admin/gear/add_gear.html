@@ -55,12 +55,12 @@
         </div>
         <div class="row twelve columns">
             <div class="offset-by-four three columns">
-                {{ form.submit() }}
+                {{ form.submit(class="button edit") }}
                 {% if legend == 'Update Item' %}
-                <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
-                    <input  class="button delete" type="button" value="Delete" 
-                    onclick="return confirm('Do you want to delete category {{ item.name }}')">
-                </a>
+                    <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
+                        <input  class="button delete" type="button" value="Delete" 
+                        onclick="return confirm('Do you want to delete category {{ item.name }}')">
+                    </a>
                 {% endif %}
             </div>
         </div>
