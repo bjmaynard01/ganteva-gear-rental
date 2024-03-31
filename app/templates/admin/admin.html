@@ -8,7 +8,7 @@
         <div id="navbar" class="twelve columns">
             <a href="" class="navlink">Classes</a>
             <a href="" class="navlink">Students</a>
-            <a href="" class="navlink">Users</a>
+            <a href="{{ url_for('admin_users.admin_users')}}" class="navlink">Users</a>
             <a href="{{ url_for('admin_gear.categories_admin') }}" class="navlink">Gear Categories</a>
             <a href="{{ url_for('admin_gear.gear_admin') }}" class="navlink">Gear</a>
         </div>

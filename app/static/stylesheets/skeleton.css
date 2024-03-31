@@ -222,18 +222,17 @@ input[type="button"].button-primary:focus {
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
 .button.delete {
-  height:50px;
-  margin-top: 10px;
+  height:40px;
   color: red;
   border-color: red;
 }
 .button.add {
-  height: 50px;
+  height: 40px;
   color: #1EAEDB;
   border-color: #1EAEDB;
 }
 .button.edit {
-  height: 50px;
+  height: 40px;
   color: #1EAEDB;
   border-color: #1EAEDB;
 }

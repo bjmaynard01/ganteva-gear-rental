@@ -33,7 +33,7 @@
                 <td>{{ item.categories.all()|length }}</td>
                 <td>
                     <a href="{{ url_for('admin_gear.update_item', id=item.id) }}"> 
-                        <input class="button edit" type="button" value="Update">
+                        <input class="button edit" type="button" value="Edit">
                     </a>
                     <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
                         <input  class="button delete" type="button" value="Delete" 
