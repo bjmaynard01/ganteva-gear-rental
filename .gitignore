@@ -8,4 +8,6 @@ logs*
 *.ps1
 *.sh
 *.cmd
-static/img/gear/*
+static/img/gear/*.jpg
+static/img/gear/*.jpeg
+static/img/gear/*.png

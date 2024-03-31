@@ -33,8 +33,7 @@ def add_gear():
 
             if add_gear_form.validate_on_submit():
 
-        
-                gear_name = add_gear_form.name.data.capitalize()
+                gear_name = add_gear_form.name.data.title()
                 gear_care = add_gear_form.care_instructions.data
                 gear_qty = add_gear_form.qty.data
                 gear_categories = add_gear_form.categories.data
@@ -84,12 +83,12 @@ def update_item(id):
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
 
-            update_gear_form = UpdateGearItemForm()
+            update_gear_form = UpdateGearItemForm(item.name)
 
             
         
             if update_gear_form.validate_on_submit():
-                item.name = update_gear_form.name.data.capitalize()
+                item.name = update_gear_form.name.data.title()
                 if update_gear_form.image.data:
                     delete_gear_img(item.image, item.img_thumb)
                     picture_file, thumb_file = save_img(update_gear_form.image.data)
@@ -106,7 +105,7 @@ def update_item(id):
                     flash('Successfully updated item {}'.format(item.name))
                     return redirect(url_for('admin_gear.gear_admin'))
                 except SQLAlchemyError as error:
-                    return 500
+                    return render_template('errors/500.html', title='Internal Error'), 500
         
             update_gear_form.name.data = item.name
             update_gear_form.care_instructions.data = item.care_instructions
@@ -182,7 +181,7 @@ def add_gear_category():
             add_category_form = GearCategoryForm()
 
             if add_category_form.validate_on_submit():
-                name = add_category_form.name.data.capitalize()
+                name = add_category_form.name.data.title()
                 desc = add_category_form.desc.data.capitalize()
 
                 try:
@@ -218,14 +217,15 @@ def update_category(id):
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
 
-            form = UpdateGearCategoryForm()
+            form = UpdateGearCategoryForm(category.name)
         
             if form.validate_on_submit():
-                category.name = form.name.data.capitalize()
+                category.name = form.name.data.title()
                 category.description = form.desc.data.capitalize()
-                db.session.commit()
-                flash('Successfully updated category {}'.format(category.name))
-                return redirect(url_for('admin_gear.categories_admin'))
+                flash(f"{form.name.data.title()} --- {category.name.title()}")
+                #db.session.commit()
+                #flash('Successfully updated category {}'.format(category.name))
+                #return redirect(url_for('admin_gear.categories_admin'))
         
             form.name.data = category.name
             form.desc.data = category.description
