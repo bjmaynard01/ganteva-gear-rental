@@ -1,0 +1,49 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>{{ legend }}</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row twelve columns">
+            <div class="offset-by-one three columns">
+                {{ form.name.label }}
+                {{ form.name(size=32) }}
+                {% for error in form.name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-three three columns">
+                {{ form.description.label }}
+                {{ form.description(size=32) }}
+                {% for error in form.description.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-four three columns">
+                {{ form.submit() }}
+            </div>
+            <div class="two columns">
+                {% if legend == 'Update Class' %}
+                <a href="{{ url_for('admin_classes.delete_class', id=classroom.id) }}">
+                    <input  class="button delete" type="button" value="Delete" 
+                    onclick="return confirm('Do you want to delete category {{ classroom.name }}')">
+                </a>
+            {% endif %}
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}

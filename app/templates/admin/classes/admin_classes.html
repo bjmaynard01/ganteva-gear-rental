@@ -1,0 +1,44 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four five columns">
+            <h4>Classes Admin</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+        <form action="{{ url_for('admin_classes.add_class') }}">
+            <input type="submit" class="button add" value="Add Class">
+        </form>
+    </div>
+    <div class="row twelve columns">
+        <div class="row twelve columns">
+            <table class="twelve columns">
+                <th>Name</th>
+                <th>Description</th>
+                {% for classroom in classes %}
+                <tr class="table-row">
+                    <td>{{ classroom.name }}</td>
+                    <td>{{ classroom.description }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">
+                            <input class="button edit" type="button" value="Edit">
+                        </a>
+                        <a href="{{ url_for('admin_classes.delete_class', id=classroom.id) }}">
+                            <input  class="button delete" type="button" value="Delete" 
+                            onclick="return confirm('Do you want to delete class{{ classroom.name }}')">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row twelve columns">
+        <form action="{{ url_for('admin_classes.add_class') }}">
+            <input type="submit" class="button add" value="Add Class">
+        </form>
+    </div>
+    
+{% endblock content %}

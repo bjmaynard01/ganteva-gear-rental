@@ -47,6 +47,9 @@ def create_app(config_class=Config):
     from app.admin.users import bp as admin_users_bp
     app.register_blueprint(admin_users_bp)
 
+    from app.admin.classes import bp as admin_classes_bp
+    app.register_blueprint(admin_classes_bp)
+
     #from app.api import bp as api_bp
     #app.register_blueprint(api_bp)
 
@@ -94,3 +97,4 @@ def create_app(config_class=Config):
 
 from app.users.models import User
 from app.gear.models import GearCategories
+from app.admin.classes.models import Classes
