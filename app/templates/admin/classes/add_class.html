@@ -11,34 +11,99 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <div class="row twelve columns">
-            <div class="offset-by-one three columns">
+            <div class="offset-by-one four columns">
                 {{ form.name.label }}
                 {{ form.name(size=32) }}
                 {% for error in form.name.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
-            <div class="offset-by-three three columns">
+            <div class="offset-by-one four columns">
                 {{ form.description.label }}
                 {{ form.description(size=32) }}
                 {% for error in form.description.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
             </div>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-one four columns">
+                <div class="six columns">
+                    {{ form.start_date.label }}
+                    {{ form.start_date }}
+                    {% for error in form.start_date.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="four columns">
+                    {{ form.end_date.label }}
+                    {{ form.end_date }}
+                    {% for error in form.end_date.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="offset-by-one four columns">
+                <div class="four columns"><b><p>Time of Day:</p></b></div>
+                <div class="two columns">
+                    {{ form.morning.label }}
+                    {{ form.morning }}
+                    {% for error in form.morning.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+                <div class="one column">
+                    {{ form.afternoon.label }}
+                    {{ form.afternoon }}
+                    {% for error in form.afternoon.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
         <div class="row twelve columns">
             <hr>
         </div>
         <div class="row twelve columns">
-            <div class="offset-by-four three columns">
-                {{ form.submit() }}
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-one eight columns">
+                <div class="three columns">
+                    {{ form.days.label }}
+                </div>
+                <div>
+                    {{ form.days(size=32, style="height:125px;") }}
+                    {% for error in form.days.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="two columns">
+        </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-three two columns">
+                {{ form.submit(class="button edit") }}
+            </div>
                 {% if legend == 'Update Class' %}
-                <a href="{{ url_for('admin_classes.delete_class', id=classroom.id) }}">
-                    <input  class="button delete" type="button" value="Delete" 
-                    onclick="return confirm('Do you want to delete category {{ classroom.name }}')">
-                </a>
+                <div class="one columns">
+                    <a href="{{ url_for('admin_classes.delete_class', id=classroom.id) }}">
+                        <input  class="button delete" type="button" value="Delete" 
+                        onclick="return confirm('Do you want to delete category {{ classroom.name }}')">
+                    </a>
+                </div>
             {% endif %}
+            {% if legend == 'Update Class' %}
+            <div class="offset-by-one one columns">
+                <a href="{{ url_for('admin_classes.admin_classes') }}"><input type="button" value="Cancel"></a>
+            </div>
+            {% elif legend == 'Add Class' %}
+            <div class="offset-by-two two columns">
+                <a href="{{ url_for('admin_classes.admin_classes') }}"><input type="button" value="Cancel"</a>
+            </div>
+            {% endif %}
+            </div>
             </div>
         </div>
         </div>

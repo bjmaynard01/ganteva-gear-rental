@@ -26,7 +26,6 @@ def login():
             return redirect(url_for('users.login', title='Login'))
         
         login_user(user, remember=form.remember_me.data)
-        flash('Succesfully logged user in.')
         
         return redirect(url_for('main.index', title='Home'))
     

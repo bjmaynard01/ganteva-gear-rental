@@ -25,7 +25,7 @@ def internal_error(error):
         if referrer is None:
             return render_template('errors/500.html', title='Internal Server Error', link=url_for('main.index')), 500
         else:
-            return render_template('errors/500.html', title='Internal Server Error', link=referrer), 500
+            return render_template('errors/500.html', title='Internal Server Error', link=referrer, error=error), 500
     
 @errors_bp.app_errorhandler(401)
 def unauthorized_for_access():
