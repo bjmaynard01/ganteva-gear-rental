@@ -1,7 +1,6 @@
 from app.admin.users import bp as admin_users_bp
 from flask import render_template, url_for, redirect, flash, current_app
 from app import db
-from app.admin.users import bp as admin_users_bp
 from flask_login import current_user, login_required
 from app.users.models import User
 from sqlalchemy.exc import SQLAlchemyError

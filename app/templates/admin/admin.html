@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block admin_content %}
-    <div class="row twelve columnes">
+    <div class="row twelve columns">
         <h4 class="offset-by-four three columns">Admin Panel</h4>
     </div>
     <div class="row">
         <div id="navbar" class="twelve columns">
-            <a href="" class="navlink">Classes</a>
+            <a href="{{ url_for('admin_classes.admin_classes') }}" class="navlink">Classes</a>
             <a href="" class="navlink">Students</a>
             <a href="{{ url_for('admin_users.admin_users')}}" class="navlink">Users</a>
             <a href="{{ url_for('admin_gear.categories_admin') }}" class="navlink">Gear Categories</a>
