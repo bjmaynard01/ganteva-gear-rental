@@ -222,10 +222,9 @@ def update_category(id):
             if form.validate_on_submit():
                 category.name = form.name.data.title()
                 category.description = form.desc.data.capitalize()
-                flash(f"{form.name.data.title()} --- {category.name.title()}")
-                #db.session.commit()
-                #flash('Successfully updated category {}'.format(category.name))
-                #return redirect(url_for('admin_gear.categories_admin'))
+                db.session.commit()
+                flash('Successfully updated category {}'.format(category.name))
+                return redirect(url_for('admin_gear.categories_admin'))
         
             form.name.data = category.name
             form.desc.data = category.description

@@ -40,8 +40,6 @@ class GearItem(db.Model):
 class GearItemSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'image', 'img_thumb', 'care_instructions', 'qty')
-    #@staticmethod
-    #def default_cat():
         
 
 

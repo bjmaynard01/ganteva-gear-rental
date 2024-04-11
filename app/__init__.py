@@ -8,9 +8,21 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from flask_marshmallow import Marshmallow
+from sqlalchemy import MetaData
+
+
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
+metadata = MetaData(naming_convention=convention)
 
 mail = Mail()
-db = SQLAlchemy()
+db = SQLAlchemy(metadata=metadata)
 ma = Marshmallow()
 migrate = Migrate()
 login = LoginManager()
@@ -22,7 +34,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     login.init_app(app)
     mail.init_app(app)
 
@@ -46,6 +58,9 @@ def create_app(config_class=Config):
 
     from app.admin.users import bp as admin_users_bp
     app.register_blueprint(admin_users_bp)
+
+    from app.admin.classes import bp as admin_classes_bp
+    app.register_blueprint(admin_classes_bp)
 
     #from app.api import bp as api_bp
     #app.register_blueprint(api_bp)
@@ -94,3 +109,4 @@ def create_app(config_class=Config):
 
 from app.users.models import User
 from app.gear.models import GearCategories
+from app.admin.classes.models import Classes

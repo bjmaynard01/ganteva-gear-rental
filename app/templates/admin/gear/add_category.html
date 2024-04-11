@@ -29,17 +29,24 @@
             <hr>
         </div>
         <div class="row twelve columns">
-            <div class="offset-by-four three columns">
-                {{ form.submit() }}
+            <div class="offset-by-two three columns">
+                {{ form.submit(class="button edit") }}
             </div>
-            <div class="two columns">
                 {% if legend == 'Update Category' %}
+                <div class="two columns">
                 <a href="{{ url_for('admin_gear.delete_category', id=category.id) }}">
                     <input  class="button delete" type="button" value="Delete" 
                     onclick="return confirm('Do you want to delete category {{ category.name }}')">
                 </a>
+                </div>
+                <div class="three columns">
+                    <a href="{{ url_for('admin_gear.categories_admin') }}"><input type="button" value="Cancel"></a>
+                </div>
+                {% elif legend == 'Add Gear Category' %}
+                <div class="offset-by-two two columns">
+                    <a href="{{ url_for('admin_classes.admin_classes') }}"><input type="button" value="Cancel"</a>
+                </div>
             {% endif %}
-            </div>
         </div>
         </div>
         </div>
