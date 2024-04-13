@@ -1,0 +1,71 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>{{ legend }}</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row twelve columns">
+            <div class="offset-by-one four columns">
+                {{ form.first_name.label }}
+                {{ form.first_name(size=32) }}
+                {% for error in form.first_name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-one four columns">
+                {{ form.last_name.label }}
+                {{ form.last_name(size=32) }}
+                {% for error in form.last_name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-one four columns">
+                <div class="six columns">
+                    {{ form.birthday.label }}
+                    {{ form.birthday }}
+                    {% for error in form.birthday.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-three two columns">
+                {{ form.submit(class="button edit") }}
+            </div>
+                {% if legend == 'Update Student' %}
+                <div class="one columns">
+                    <a href="{{ url_for('admin_students.delete_student', id=student.id) }}">
+                        <input  class="button delete" type="button" value="Delete" 
+                        onclick="return confirm('Do you want to delete category {{ student.first_name }}')">
+                    </a>
+                </div>
+            {% endif %}
+            {% if legend == 'Update Student' %}
+            <div class="offset-by-one one columns">
+                <a href="{{ url_for('admin_students.admin_students') }}"><input type="button" value="Cancel"></a>
+            </div>
+            {% elif legend == 'Add Class' %}
+            <div class="offset-by-two two columns">
+                <a href="{{ url_for('admin_students.admin_students') }}"><input type="button" value="Cancel"</a>
+            </div>
+            {% endif %}
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}
