@@ -36,6 +36,15 @@
                     {% endfor %}
                 </div>
             </div>
+            <div class="offset-by-one four columns">
+                <div class="six columns">
+                    {{ form.classes.label }}
+                    {{ form.classes(size=32, style="width: 250px; height: 110px;") }}
+                    {% for error in form.classes.errors %}
+                        <span class="form-error">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+            </div>
         <div class="row twelve columns">
             <hr>
         </div>

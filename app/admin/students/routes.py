@@ -6,6 +6,7 @@ from app.admin.students.models import Student
 from sqlalchemy.exc import SQLAlchemyError
 from app.admin.students.forms import AddStudentForm, UpdateStudentForm
 from datetime import date
+from app.admin.classes.models import Classes
 
 @admin_students_bp.route('/admin/students')
 @login_required
@@ -41,15 +42,19 @@ def add_student():
                 first_name = add_student_form.first_name.data.title()
                 last_name = add_student_form.last_name.data.title()
                 birthday = add_student_form.birthday.data
+                classes = add_student_form.classes.data
 
                 try:
                     student = Student(create_date=today, first_name=first_name, last_name=last_name, birthday=birthday)
+                    for classroom in classes:
+                        classroom.students.append(student)
                     db.session.add(student)
                     db.session.commit()
                     flash(f'Successfully added student {first_name} {last_name}')
                     return redirect(url_for('admin_students.admin_students'))
                 
                 except SQLAlchemyError as error:
+                    db.session.rollback()
                     return 500
                 
             return render_template('/admin/students/add_student.html', title='Add Student', form=add_student_form,
@@ -62,7 +67,7 @@ def add_student():
         flash('You must be logged in to add students')
         return redirect(url_for('users.login'))
 
-@admin_students_bp.route('/admin/students/<id>/update')
+@admin_students_bp.route('/admin/students/<id>/update', methods=["GET", "POST"])
 @login_required
 def update_student(id):
     if not current_user.is_anonymous:
@@ -72,6 +77,7 @@ def update_student(id):
                 student = Student.query.get_or_404(id)
 
             except SQLAlchemyError as error:
+                 db.session.rollback()
                  return 500
             
             update_student_form = UpdateStudentForm()
@@ -80,6 +86,7 @@ def update_student(id):
                 student.first_name = update_student_form.first_name.data.title()
                 student.last_name = update_student_form.last_name.data.title()
                 student.birthday = update_student_form.birthday.data
+                student.classes = update_student_form.classes.data
 
                 try:
                     db.session.commit()
@@ -87,11 +94,13 @@ def update_student(id):
                     return redirect(url_for('admin_students.admin_students'))
 
                 except:
+                    db.session.rollback()
                     return 500
                 
             update_student_form.first_name.data = student.first_name
             update_student_form.last_name.data = student.last_name
             update_student_form.birthday.data = student.birthday
+            update_student_form.classes.data = student.classes
 
             return render_template('/admin/students/add_student.html', title='Update Student', form=update_student_form,
                                    legend='Update Student', student=student )
@@ -106,5 +115,24 @@ def update_student(id):
 @admin_students_bp.route('/admin/students/<id>/delete')
 @login_required
 def delete_student(id):
-    return redirect(url_for('admin_students.admin_students'))
+    if not current_user.is_anonymous:
+
+        if current_user.is_admin:
+            try:
+                student = Student.query.get_or_404(id)
+                db.session.delete(student)
+                db.session.commit()
+                flash(f'Successfully deleted student {student.first_name} {student.last_name}')
+                return redirect(url_for('admin_students.admin_students'))
+
+            except SQLAlchemyError as error:
+                db.session.rollback()
+                return 500
+
+        else:
+            return 401
+
+    else:
+        flash(f"You must be logged in to delete students.")
+        return redirect(url_for('users.login'))
 

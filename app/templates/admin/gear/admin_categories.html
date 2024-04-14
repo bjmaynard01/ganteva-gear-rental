@@ -22,7 +22,7 @@
                 <tr class="table-row">
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
-                    <td>{{ category.items.all() | length }}</td>
+                    <td>{{ category.items.count() }}</td>
                     <td>
                         <a href="{{ url_for('admin_gear.update_category', id=category.id) }}">
                             <input class="button edit" type="button" value="Edit">

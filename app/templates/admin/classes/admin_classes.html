@@ -40,7 +40,7 @@
                         {{ day.day }}
                     {% endfor%}
                     </td>
-                    <td></td>
+                    <td>{{  classroom.students.count() }}</td>
                     <td>
                         <a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">
                             <input class="button edit" type="button" value="Edit">

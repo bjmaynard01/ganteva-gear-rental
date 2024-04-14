@@ -30,7 +30,7 @@
                 <td>N</td>
                 {% endif %}
                 <td>{{ item.qty }}</td>
-                <td>{{ item.categories.all()|length }}</td>
+                <td>{{ item.categories.count() }}</td>
                 <td>
                     <a href="{{ url_for('admin_gear.update_item', id=item.id) }}"> 
                         <input class="button edit" type="button" value="Edit">
