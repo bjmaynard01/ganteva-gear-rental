@@ -56,7 +56,7 @@
                 <div class="one columns">
                     <a href="{{ url_for('admin_students.delete_student', id=student.id) }}">
                         <input  class="button delete" type="button" value="Delete" 
-                        onclick="return confirm('Do you want to delete category {{ student.first_name }}')">
+                        onclick="return confirm('Do you want to delete student {{ student.first_name }} {{ student.last_name }}')">
                     </a>
                 </div>
             {% endif %}

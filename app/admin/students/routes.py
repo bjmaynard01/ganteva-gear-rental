@@ -15,7 +15,7 @@ def admin_students():
 
         if current_user.is_admin:
             try:
-                students = Student.query.all()
+                students = Student.query.order_by(Student.last_name).all()
                 return render_template('admin/students/admin_students.html', title='Student Administration',
                                        students=students)
             except SQLAlchemyError as error:
