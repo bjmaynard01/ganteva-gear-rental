@@ -47,6 +47,32 @@
                     <a href="{{ url_for('admin_classes.admin_classes') }}"><input type="button" value="Cancel"</a>
                 </div>
             {% endif %}
+            {% if legend == 'Update Category' %}
+                <div class="row twelve columns">
+                    <table class="twelve columns">
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Care Instructions</th>
+                        <th>Qty</th>
+                        {% for item in items %}
+                        <tr class="table-row">
+                            <td>
+                                <a href="{{ url_for('admin_gear.update_item', id=item.id) }}" target="_blank" rel="noopener noreferrer">
+                                    {{ item.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('static', filename='img/gear/' + item.image) }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}">
+                                </a>
+                            </td>
+                            <td>{{ item.care_instructions }}</td>
+                            <td>{{ item.qty }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
         </div>
         </div>
         </div>

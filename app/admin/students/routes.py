@@ -1,5 +1,5 @@
 from app.admin.students import bp as admin_students_bp
-from flask import render_template, url_for, redirect, flash, current_app
+from flask import render_template, url_for, redirect, flash, current_app, request
 from app import db
 from flask_login import current_user, login_required
 from app.admin.students.models import Student
@@ -15,9 +15,12 @@ def admin_students():
 
         if current_user.is_admin:
             try:
-                students = Student.query.order_by(Student.last_name).all()
+                page = request.args.get('page', 1, type=int)
+                students = Student.query.order_by(Student.last_name).paginate(page=page, per_page=2)
+                all_students = Student.query.all()
+                total_students = len(all_students)
                 return render_template('admin/students/admin_students.html', title='Student Administration',
-                                       students=students)
+                                       students=students, total_students=total_students, page=page)
             except SQLAlchemyError as error:
                 return 500
 

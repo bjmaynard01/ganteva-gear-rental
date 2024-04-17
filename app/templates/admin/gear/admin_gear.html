@@ -23,7 +23,11 @@
             <tr class="table-row">
                 <td>{{ item.name }}</td>
                 <!--<td>{{ item.image }}</td>-->
-                <td><img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}"></td>
+                <td>
+                    <a href="{{ url_for('static', filename='img/gear/' + item.image) }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}">
+                    </a>
+                </td>
                 {% if item.care_instructions %}
                 <td>Y</td>
                 {% else %}

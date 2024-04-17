@@ -213,6 +213,7 @@ def update_category(id):
         if current_user.is_admin:
             try:
                 category = GearCategories.query.get_or_404(id)
+                items = category.items.all()
 
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
@@ -230,7 +231,7 @@ def update_category(id):
             form.desc.data = category.description
                 
             return render_template('admin/gear/add_category.html', title='Update Category', form=form,
-                                       legend='Update Category', category=category), 200
+                                       legend='Update Category', category=category, items=items), 200
             
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
