@@ -16,7 +16,7 @@ def admin_students():
         if current_user.is_admin:
             try:
                 page = request.args.get('page', 1, type=int)
-                students = Student.query.order_by(Student.last_name).paginate(page=page, per_page=2)
+                students = Student.query.order_by(Student.last_name).paginate(page=page, per_page=10)
                 all_students = Student.query.all()
                 total_students = len(all_students)
                 return render_template('admin/students/admin_students.html', title='Student Administration',

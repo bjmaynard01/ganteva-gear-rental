@@ -15,9 +15,10 @@ def admin_classes():
 
         if current_user.is_admin == True:
             try:
-                classes = Classes.query.all()      
+                classes = Classes.query.all()
+                total_classes = len(classes)    
                 return render_template('admin/classes/admin_classes.html', title='Class Administration', 
-                                       classes=classes), 200
+                                       classes=classes, total_classes=total_classes), 200
             
             except SQLAlchemyError as error:
                 return 500
