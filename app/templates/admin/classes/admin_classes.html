@@ -5,6 +5,7 @@
     <div class="row twelve columns">
         <div class="offset-by-four five columns">
             <h4>Classes Admin</h4>
+            <p>Total Classes: {{ total_classes }}</p>
         </div>
     </div>
     <div class="row twelve columns">
@@ -24,7 +25,7 @@
                 <th>Num. Students</th>
                 {% for classroom in classes %}
                 <tr class="table-row">
-                    <td>{{ classroom.name }}</td>
+                    <td><a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">{{ classroom.name }}</a></td>
                     <td>{{ classroom.description }}</td>
                     <td>{{ classroom.start_date.strftime('%m-%d-%Y') }}</td>
                     <td>{{ classroom.end_date.strftime('%m-%d-%Y') }}</td>
@@ -40,7 +41,7 @@
                         {{ day.day }}
                     {% endfor%}
                     </td>
-                    <td></td>
+                    <td>{{  classroom.students.count() }}</td>
                     <td>
                         <a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">
                             <input class="button edit" type="button" value="Edit">

@@ -13,6 +13,12 @@ classes_days_ref = db.Table(
     sa.Column('days_id', sa.Integer, sa.ForeignKey('classes.id'))
 )
 
+classes_students_ref = db.Table(
+    'classes_students_ref',
+    sa.Column('classes_id', sa.Integer, sa.ForeignKey('student.id')),
+    sa.Column('student_id', sa.Integer, sa.ForeignKey('classes.id'))
+)
+
 class Classes(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     create_date: so.Mapped[datetime.date] = so.mapped_column(sa.Date, index=True)
@@ -23,6 +29,7 @@ class Classes(db.Model):
     morning: so.Mapped[bool] = so.mapped_column(sa.Boolean)
     afternoon: so.Mapped[bool] = so.mapped_column(sa.Boolean)
     daysofweek = db.relationship('DaysOfWeek', secondary=classes_days_ref, backref=db.backref('classes', lazy='dynamic'), lazy='dynamic')
+    students = db.relationship('Student', secondary=classes_students_ref, backref=db.backref('classes', lazy='dynamic'), lazy='dynamic')
 
     def __repr__(self):
         return f"Classroom('{self.create_date}', '{self.name}', '{self.description}', '{self.start_date}', '{self.end_date}')"

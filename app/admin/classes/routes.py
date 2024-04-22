@@ -4,6 +4,7 @@ from app import db
 from flask_login import current_user, login_required
 from sqlalchemy.exc import SQLAlchemyError
 from app.admin.classes.models import Classes, DaysOfWeek
+from app.admin.students.models import Student
 from app.admin.classes.forms import ClassAddForm, ClassUpdateForm
 from datetime import date
 
@@ -14,9 +15,10 @@ def admin_classes():
 
         if current_user.is_admin == True:
             try:
-                classes = Classes.query.all()      
+                classes = Classes.query.all()
+                total_classes = len(classes)    
                 return render_template('admin/classes/admin_classes.html', title='Class Administration', 
-                                       classes=classes), 200
+                                       classes=classes, total_classes=total_classes), 200
             
             except SQLAlchemyError as error:
                 return 500
@@ -80,6 +82,7 @@ def update_class(id):
 
             try:
                 classroom = Classes.query.get_or_404(id)
+                students = classroom.students.order_by(Student.last_name).all()
 
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
@@ -109,7 +112,7 @@ def update_class(id):
             update_class_form.days.data = classroom.daysofweek
             
             return render_template('admin/classes/add_class.html', title='Update Class', form=update_class_form,
-                                   legend='Update Class', classroom=classroom)
+                                   legend='Update Class', classroom=classroom, students=students)
     else:
         flash('You must be logged in to update classes')
         return redirect(url_for('users.login'))

@@ -13,7 +13,8 @@ def admin_users():
         if current_user.is_admin == True:
 
             users = User.query.all()
-            return render_template('admin/users/admin_users.html', title='User Admin', users=users)
+            total_users = len(users)
+            return render_template('admin/users/admin_users.html', title='User Admin', users=users, total_users=total_users)
         
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401

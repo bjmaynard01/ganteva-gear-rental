@@ -15,7 +15,12 @@ def gear_admin():
 
         if current_user.is_admin == True:
             items = GearItem.query.all()
-            return render_template('admin/gear/admin_gear.html', title='Gear Admin', items=items), 200
+            total_items = 0
+
+            for item in items:
+                total_items += item.qty
+
+            return render_template('admin/gear/admin_gear.html', title='Gear Admin', items=items, total_items=total_items), 200
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
     else:
@@ -158,11 +163,11 @@ def categories_admin():
     
         if current_user.is_admin == True:
             categories = GearCategories.query.all()
-
+            total_categories = len(categories)
             #need a join statement that pulls and adds up qtys of items and displays, but not required
 
             return render_template('admin/gear/admin_categories.html', 
-                                   title='Gear Categories', categories=categories), 200
+                                   title='Gear Categories', categories=categories, total_categories=total_categories), 200
     
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
@@ -213,6 +218,7 @@ def update_category(id):
         if current_user.is_admin:
             try:
                 category = GearCategories.query.get_or_404(id)
+                items = category.items.all()
 
             except SQLAlchemyError as error:
                 return render_template('errors/500.html', title='Internal Error'), 500
@@ -230,7 +236,7 @@ def update_category(id):
             form.desc.data = category.description
                 
             return render_template('admin/gear/add_category.html', title='Update Category', form=form,
-                                       legend='Update Category', category=category), 200
+                                       legend='Update Category', category=category, items=items), 200
             
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401

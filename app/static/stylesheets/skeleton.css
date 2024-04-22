@@ -161,7 +161,12 @@ a {
   color: #1EAEDB; }
 a:hover {
   color: #0FA0CE; }
-
+a.page-link {
+  
+}
+a.page-link-active {
+  color: #000000;
+}
 
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
