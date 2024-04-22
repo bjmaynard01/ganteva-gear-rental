@@ -62,6 +62,9 @@ def create_app(config_class=Config):
     from app.admin.classes import bp as admin_classes_bp
     app.register_blueprint(admin_classes_bp)
 
+    from app.admin.students import bp as admin_students_bp
+    app.register_blueprint(admin_students_bp)
+
     #from app.api import bp as api_bp
     #app.register_blueprint(api_bp)
 
