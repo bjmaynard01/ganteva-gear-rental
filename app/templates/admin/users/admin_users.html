@@ -12,18 +12,22 @@
     </div>
     <div class="row twelve columns">
         <table class="twelve columns">
+            <th>Create Date</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Last Login</th>
             <th>Confirmed</th>
             <th>Admin</th>
             {% for user in users %}
                 <tr>
+                    <td>{{ user.create_date.strftime('%m-%d-%Y') }}</td>
                     <td>{{ user.fname }}</td>
                     <td>{{ user.lname }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone }}</td>
+                    <td>{{ user.last_login.strftime('%m-%d-%Y') }}</td>
                     <td>{{ user.confirmed }}</td>
                     <td>{{ user.is_admin }}</td>
                     <td>

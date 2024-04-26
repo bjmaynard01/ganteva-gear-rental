@@ -1,8 +1,10 @@
 from app import mail, db
-from flask import render_template, current_app
+from flask import render_template, current_app, url_for
 from app.users.models import User
 import uuid
 from werkzeug.security import generate_password_hash
+import datetime
+import random
 
 
 def send_registration_mail(mail_to, to_name, email, cc):
@@ -43,3 +45,24 @@ def gen_users(num_users):
         db.session.add(user)
     db.session.commit()
     return 'Created ' + str(i) + 'test users.'
+
+def generate_random_date(start_date, end_date, k):
+    date_range = end_date - start_date
+    for _ in range(k):
+        random_days = random.randint(0, date_range.days)
+        random_date = start_date + datetime.timedelta(days=random_days)
+    return random_date
+
+
+def send_password_reset_email(user, reset_password_url, user_email):
+    html = render_template('users/password_reset_email.html', user=user, reset_password_url=reset_password_url)
+
+    try: 
+        mail.send_message(
+            recipients = [user_email],
+            subject = current_app.config.get('PASSWORD_RESET_SUBJECT'),
+            html = html
+        )
+
+    except Exception as error:
+        return "Error encountered when trying to send password reset email.", error

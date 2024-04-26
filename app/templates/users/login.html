@@ -8,23 +8,27 @@
         <form action="" method="post" novalidate>
             {{ form.hidden_tag() }}
             <div class="row">
-            <p>
                 {{ form.username.label }}
                 {{ form.username(size=32) }}
-            
                 {% for error in form.username.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
+            </div>
+            <div class="row">
                 {{ form.password.label }}
                 {{ form.password(size=32) }}
                 {% for error in form.password.errors %}
                     <span class="form-error">[{{ error }}]</span>
                 {% endfor %}
-                {{ form.remember_me.label }}{{ form.remember_me() }}
-            </p>
+            </div>
+            <div class="row">
+                {{ form.remember_me.label }}
+                {{ form.remember_me() }}
+            </div>
+            <div class="row">
+                <a href="{{ url_for('users.reset_password_request') }}">Forgot Password</a><br /><br />
                 {{ form.submit() }}
             </div>
-
             <p>If you need an account, go <a href="{{ url_for('users.register') }}">here</a> to register.</p>
         </form>
     </div>
