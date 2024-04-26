@@ -29,3 +29,13 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=self.email.data.lower()).first()
         if user is not None:
             raise ValidationError('Email already registered')
+        
+class PasswordResetRequestForm(FlaskForm):
+    email = EmailField('Email:', validators=[InputRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+class PasswordResetForm(FlaskForm):
+    password = PasswordField('Password:', validators=[InputRequired(), EqualTo('confirm_pass', message="Passwords must match"),\
+                                                      Length(min=8, message='Passwords must be at least 8 characters in length')])
+    confirm_pass = PasswordField('Confirm Password:', validators=[InputRequired()])
+    submit = SubmitField('Reset Password')

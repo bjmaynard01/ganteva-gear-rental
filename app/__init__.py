@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 from config import Config
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -79,6 +79,9 @@ def create_app(config_class=Config):
 
     from app.api.main import bp as main_api
     app.register_blueprint(main_api)
+
+    with app.app_context(), app.test_request_context():
+        url = url_for('main.index')
 
     if not app.debug:
         if app.config['MAIL_SERVER']:
