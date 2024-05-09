@@ -6,7 +6,7 @@ from app.users import bp as users_bp
 from app.users.forms import LoginForm, RegistrationForm, PasswordResetRequestForm, PasswordResetForm
 from app.users.models import User
 from sqlalchemy.exc import SQLAlchemyError
-from app.users.utils import send_registration_mail, send_password_reset_email
+from app.users.utils import send_registration_mail, send_password_reset_email, send_confirmation_mail
 import datetime
 
 @users_bp.route('/login', methods=['GET', 'POST'])
@@ -62,12 +62,16 @@ def register():
         
         try:
             user = User(fname=f_name, lname=l_name, email=email, phone=phone, create_date=create_date, last_login=create_date)
-            user.set_password(password)                        
+            user.set_password(password)
             db.session.add(user)
             db.session.commit()
+            user = User.query.filter_by(email=email).first()
+            confirmation_url = url_for("admin_users.update_user", id=user.id, _external=True)                        
+
 
             try:
                 send_registration_mail([email], f_name, email, [cc])
+                send_confirmation_mail(['bryan@maynardfolks.com'], user=user, confirmation_link=confirmation_url)
             
             except Exception as error:
                 return "Error encountered when trying to send email." + str(error)
@@ -129,6 +133,7 @@ def reset_password(token, user_id):
             return 500
         
     return render_template("users/reset_password.html", title="Reset Password", form=form)
+
 
 @users_bp.route('/user/<id>')
 @login_required

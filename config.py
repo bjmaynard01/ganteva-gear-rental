@@ -15,5 +15,6 @@ class Config:
     API_READ_KEY = os.environ.get('API_READ_KEY')
     #RESET_PASS_TOKEN_MAX_AGE = os.environ.get('RESET_PASS_TOKEN_MAX_AGE') or 1800
     RESET_PASS_TOKEN_MAX_AGE = 1800
+    CONFIRMATION_TOKEN_MAX_AGE = 3600
     REGISTRATION_SUBJECT = os.environ.get('REGISTRATION_SUBJECT') or 'Test Subject'
     PASSWORD_RESET_SUBJECT = os.environ.get('PASSWORD_RESET_SUBJECT') or 'Test Password Reset Subject'

@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="row twelve columns">
-        <div class="twelve">
+        <div class="twelve columns">
             {% for page_num in students.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
                 {% if page_num %}
                     {% if students.page == page_num %}
