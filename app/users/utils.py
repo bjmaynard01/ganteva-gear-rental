@@ -11,7 +11,7 @@ def send_registration_mail(mail_to, to_name, email, cc):
     html = render_template('users/registration_email.html', name=to_name, email=email)
     try:
         mail.send_message( 
-            recipients=mail_to, 
+            recipients=mail_to,
             subject=current_app.config.get('REGISTRATION_SUBJECT'),
             cc = cc,
             html=html
@@ -19,6 +19,18 @@ def send_registration_mail(mail_to, to_name, email, cc):
     
     except Exception as error:
         return "Error encounted trying to send mail message.", error
+    
+def send_confirmation_mail(mail_to, user, confirmation_link):
+    html = render_template('users/confirmation_mail.html', user=user, confirmation_link=confirmation_link)
+    try:
+        mail.send_message(
+            recipients=mail_to,
+            subject='Confirm New User for Rental App',
+            html = html
+        )
+    
+    except Exception as error:
+        return "Error encountered trying to send mail message.", error
     
 def clear_user_table():
     users = User.query.all()
@@ -66,3 +78,4 @@ def send_password_reset_email(user, reset_password_url, user_email):
 
     except Exception as error:
         return "Error encountered when trying to send password reset email.", error
+    

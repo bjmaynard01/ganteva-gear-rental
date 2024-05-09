@@ -45,6 +45,20 @@
             {% endfor %}
         </table>
     </div>
-
+    <div class="row">
+        <div class="twelve columns">
+            {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    {% if users.page == page_num %}
+                        <a href="{{ url_for('admin_users.admin_users', page=page_num) }}" class="page-link-active">{{ page_num }}</a>
+                    {% else %}
+                        <a href="{{ url_for('admin_users.admin_users', page=page_num) }}" class="page-link">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock content %}

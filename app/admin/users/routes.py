@@ -1,5 +1,5 @@
 from app.admin.users import bp as admin_users_bp
-from flask import render_template, url_for, redirect, flash, current_app
+from flask import render_template, url_for, redirect, flash, current_app, request
 from app import db
 from flask_login import current_user, login_required
 from app.users.models import User
@@ -11,10 +11,12 @@ from app.admin.users.admin_forms import UserAdminForm
 def admin_users():
     if not current_user.is_anonymous:
         if current_user.is_admin == True:
-
-            users = User.query.all()
-            total_users = len(users)
-            return render_template('admin/users/admin_users.html', title='User Admin', users=users, total_users=total_users)
+            page = request.args.get('page', 1, type=int)
+            users = User.query.order_by(User.lname).paginate(page=page, per_page=10)
+            all_users = User.query.all()
+            total_users = len(all_users)
+            return render_template('admin/users/admin_users.html', title='User Admin', users=users, total_users=total_users,
+                                   page=page)
         
         else:
             return render_template('errors/401.html', title='Unauthorized'), 401
