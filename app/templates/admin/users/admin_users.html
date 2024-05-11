@@ -1,0 +1,64 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>Manage Users</h4>
+            <p>Total Users: {{ total_users }}</p>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    </div>
+    <div class="row twelve columns">
+        <table class="twelve columns">
+            <th>Create Date</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Last Login</th>
+            <th>Confirmed</th>
+            <th>Admin</th>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.create_date.strftime('%m-%d-%Y') }}</td>
+                    <td>{{ user.fname }}</td>
+                    <td>{{ user.lname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.last_login.strftime('%m-%d-%Y') }}</td>
+                    <td>{{ user.confirmed }}</td>
+                    <td>{{ user.is_admin }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_users.update_user', id=user.id) }}">
+                            <input class="button edit" type="button" value="Edit" style="padding-left: 20%; padding-right: 20%">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin_users.delete_user', id=user.id) }}">
+                            <input class="button delete" type="button" value="Delete" 
+                            style="padding-left: 10%; padding-right: 10%" onclick="return confirm('Do you want to delete user: {{ user.email }}')" >
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="row">
+        <div class="twelve columns">
+            {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    {% if users.page == page_num %}
+                        <a href="{{ url_for('admin_users.admin_users', page=page_num) }}" class="page-link-active">{{ page_num }}</a>
+                    {% else %}
+                        <a href="{{ url_for('admin_users.admin_users', page=page_num) }}" class="page-link">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}

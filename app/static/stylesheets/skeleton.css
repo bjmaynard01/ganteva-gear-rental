@@ -161,7 +161,12 @@ a {
   color: #1EAEDB; }
 a:hover {
   color: #0FA0CE; }
-
+a.page-link {
+  
+}
+a.page-link-active {
+  color: #000000;
+}
 
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -221,7 +226,21 @@ input[type="button"].button-primary:focus {
   color: #FFF;
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
-
+.button.delete {
+  height:40px;
+  color: red;
+  border-color: red;
+}
+.button.add {
+  height: 40px;
+  color: #1EAEDB;
+  border-color: #1EAEDB;
+}
+.button.edit {
+  height: 40px;
+  color: #1EAEDB;
+  border-color: #1EAEDB;
+}
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -288,7 +307,9 @@ label > .label-body {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: circle inside; }
+  list-style: none;
+  display: inline;
+   }
 ol {
   list-style: decimal inside; }
 ol, ul {
@@ -323,6 +344,7 @@ pre > code {
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 th,
+tr,
 td {
   padding: 12px 15px;
   text-align: left;

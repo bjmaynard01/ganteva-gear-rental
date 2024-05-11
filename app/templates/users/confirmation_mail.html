@@ -1,0 +1,25 @@
+<!DOCTYPE html lang="en">
+<html>
+    <head>
+
+    </head>
+    <body>
+        <p>Good day madame Director,</p>
+
+        <p>There has been a new user sign up on the gear rental site, and they need to be confirmed before they can begin
+        using the application. Please verify that you are familiar with the user below and then click the link to confirm them.</p>
+
+        <p>
+            <ul>
+                <li><b>First Name:</b> {{ user.fname }}</li>
+                <li><b>Last Name:</b> {{ user.lname }}</li>
+                <li><b>Email:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></li>
+                <li><b>Phone:</b> <a href="tel:{{ user.phone }}">{{ user.phone }}</a></li>
+            </ul>
+        </p>
+
+        <p>If you recognize the above user and their information looks correct, please approve their account for use by 
+        clicking <a href="{{ confirmation_link }}">here.</a> Or, if that doesn't work, you can copy and paste the following
+        url into a new browser session: <a href="{{ confirmation_link }}">{{ confirmation_link }}</a></p>
+    </body>
+</html>
