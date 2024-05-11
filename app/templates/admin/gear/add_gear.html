@@ -1,0 +1,77 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>{{ legend }}</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row twelve columns">
+            <div class="three columns">
+                {{ form.name.label }}
+                {{ form.name(size=32) }}
+                {% for error in form.name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-four three columns">
+                {{ form.image.label }}
+                {{ form.image(size=32) }}{% if legend == "Update Item" %}<p>Upload new photo to change</p>{% endif %}
+                {% for error in form.image.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+                {% if legend == "Update Item" %}
+                    <p><img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}"></p>
+                {% endif %}
+            </div>
+        <div class="row twelve columns">
+            <div class="three columns">
+                {{ form.care_instructions.label }}
+                {{ form.care_instructions(style="height: 300px; resize: none;", cols="45")}}
+                {% for error in form.care_instructions.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-four three columns">
+                {{ form.qty.label }}
+                {{ form.qty(size=32) }}
+                {% for errror in form.qty.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-four three columns">
+                {{ form.categories.label }}
+                {{ form.categories(style="height: 100px; width:175px")}}
+                {% for error in form.categories.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-two three columns">
+                {{ form.submit(class="button edit") }}
+            </div>
+                {% if legend == 'Update Item' %}
+                <div class="three columns">
+                    <a href="{{ url_for('admin_gear.delete_item', id=item.id) }}">
+                        <input  class="button delete" type="button" value="Delete" 
+                        onclick="return confirm('Do you want to delete category {{ item.name }}')">
+                    </a>
+                </div>
+                {% endif %}
+            <div class="three columns">
+                <a href="{{ url_for('admin_gear.gear_admin') }}"><input type="button" value="Cancel"></a>
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}

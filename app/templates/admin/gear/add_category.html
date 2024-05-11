@@ -1,0 +1,82 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four four columns">
+            <h4>{{ legend }}</h4>
+        </div>
+    </div>
+    <div class="row twelve columns">
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row twelve columns">
+            <div class="offset-by-one three columns">
+                {{ form.name.label }}
+                {{ form.name(size=32) }}
+                {% for error in form.name.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="offset-by-three three columns">
+                {{ form.desc.label }}
+                {{ form.desc(size=32) }}
+                {% for error in form.desc.errors %}
+                    <span class="form-error">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+        <div class="row twelve columns">
+            <hr>
+        </div>
+        <div class="row twelve columns">
+            <div class="offset-by-two three columns">
+                {{ form.submit(class="button edit") }}
+            </div>
+                {% if legend == 'Update Category' %}
+                <div class="two columns">
+                <a href="{{ url_for('admin_gear.delete_category', id=category.id) }}">
+                    <input  class="button delete" type="button" value="Delete" 
+                    onclick="return confirm('Do you want to delete category {{ category.name }}')">
+                </a>
+                </div>
+                <div class="three columns">
+                    <a href="{{ url_for('admin_gear.categories_admin') }}"><input type="button" value="Cancel"></a>
+                </div>
+                {% elif legend == 'Add Gear Category' %}
+                <div class="offset-by-two two columns">
+                    <a href="{{ url_for('admin_classes.admin_classes') }}"><input type="button" value="Cancel"</a>
+                </div>
+            {% endif %}
+            {% if legend == 'Update Category' %}
+                <div class="row twelve columns">
+                    <table class="twelve columns">
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Care Instructions</th>
+                        <th>Qty</th>
+                        {% for item in items %}
+                        <tr class="table-row">
+                            <td>
+                                <a href="{{ url_for('admin_gear.update_item', id=item.id) }}" target="_blank" rel="noopener noreferrer">
+                                    {{ item.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('static', filename='img/gear/' + item.image) }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}">
+                                </a>
+                            </td>
+                            <td>{{ item.care_instructions }}</td>
+                            <td>{{ item.qty }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+        </div>
+        </div>
+    </form>
+    </div>
+
+{% endblock content %}

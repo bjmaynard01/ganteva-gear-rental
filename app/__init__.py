@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 from config import Config
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -8,9 +8,21 @@ import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from flask_marshmallow import Marshmallow
+from sqlalchemy import MetaData
+
+
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
+metadata = MetaData(naming_convention=convention)
 
 mail = Mail()
-db = SQLAlchemy()
+db = SQLAlchemy(metadata=metadata)
 ma = Marshmallow()
 migrate = Migrate()
 login = LoginManager()
@@ -18,11 +30,11 @@ login.login_view = 'users.login'
 login.login_message = ('Please login to access this page.')
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="./templates")
     app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     login.init_app(app)
     mail.init_app(app)
 
@@ -41,6 +53,18 @@ def create_app(config_class=Config):
     from app.admin import bp as admin_bp
     app.register_blueprint(admin_bp)
 
+    from app.admin.gear import bp as admin_gear_bp
+    app.register_blueprint(admin_gear_bp)
+
+    from app.admin.users import bp as admin_users_bp
+    app.register_blueprint(admin_users_bp)
+
+    from app.admin.classes import bp as admin_classes_bp
+    app.register_blueprint(admin_classes_bp)
+
+    from app.admin.students import bp as admin_students_bp
+    app.register_blueprint(admin_students_bp)
+
     #from app.api import bp as api_bp
     #app.register_blueprint(api_bp)
 
@@ -55,6 +79,9 @@ def create_app(config_class=Config):
 
     from app.api.main import bp as main_api
     app.register_blueprint(main_api)
+
+    with app.app_context(), app.test_request_context():
+        url = url_for('main.index')
 
     if not app.debug:
         if app.config['MAIL_SERVER']:
@@ -74,7 +101,7 @@ def create_app(config_class=Config):
 
         if not os.path.exists('logs'):
             os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240,
+        file_handler = RotatingFileHandler('logs/gear-rental.log', maxBytes=10240,
                                            backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -83,15 +110,9 @@ def create_app(config_class=Config):
 
         app.logger.setLevel(logging.INFO)
         app.logger.info('Ganteva Gear Rental App Startup')
-
-        @app.errorhandler(404)
-        def page_not_found(e):
-            if request.path.startswith('/api/'):
-                return jsonify(status_code=404, message='Resource not found'), 404
-            else:
-                return render_template('errors/404.html'), 404
         
     return app
 
 from app.users.models import User
 from app.gear.models import GearCategories
+from app.admin.classes.models import Classes

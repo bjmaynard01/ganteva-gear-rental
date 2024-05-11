@@ -1,0 +1,65 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+
+    <div class="row twelve columns">
+        <div class="offset-by-four five columns">
+            <h4>Classes Admin</h4>
+            <p>Total Classes: {{ total_classes }}</p>
+        </div>
+    </div>
+    <div class="row twelve columns">
+        <form action="{{ url_for('admin_classes.add_class') }}">
+            <input type="submit" class="button add" value="Add Class">
+        </form>
+    </div>
+    <div class="row twelve columns">
+        <div class="row twelve columns">
+            <table class="twelve columns">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Time of Day</th>
+                <th>Days of Week</th>
+                <th>Num. Students</th>
+                {% for classroom in classes %}
+                <tr class="table-row">
+                    <td><a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">{{ classroom.name }}</a></td>
+                    <td>{{ classroom.description }}</td>
+                    <td>{{ classroom.start_date.strftime('%m-%d-%Y') }}</td>
+                    <td>{{ classroom.end_date.strftime('%m-%d-%Y') }}</td>
+                    {% if classroom.morning == True and classroom.afternoon == True %}
+                    <td>AM/PM</td>
+                    {% elif classroom.afternoon == True %}
+                    <td>PM</td>
+                    {% elif classroom.morning == True %}
+                    <td>AM</td>
+                    {% endif %}
+                    <td>
+                    {% for day in classroom.daysofweek %}
+                        {{ day.day }}
+                    {% endfor%}
+                    </td>
+                    <td>{{  classroom.students.count() }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_classes.update_class', id=classroom.id) }}">
+                            <input class="button edit" type="button" value="Edit">
+                        </a>
+                        <a href="{{ url_for('admin_classes.delete_class', id=classroom.id) }}">
+                            <input  class="button delete" type="button" value="Delete" style="width: 90px;"
+                            onclick="return confirm('Do you want to delete class{{ classroom.name }}')">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row twelve columns">
+        <form action="{{ url_for('admin_classes.add_class') }}">
+            <input type="submit" class="button add" value="Add Class">
+        </form>
+    </div>
+    
+{% endblock content %}
