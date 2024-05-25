@@ -48,7 +48,7 @@ def add_student():
                 classes = add_student_form.classes.data
 
                 try:
-                    student = Student(create_date=today, first_name=first_name, last_name=last_name, birthday=birthday)
+                    student = Student(create_date=today, first_name=first_name, last_name=last_name, birthday=birthday, last_modified=today)
                     for classroom in classes:
                         classroom.students.append(student)
                     db.session.add(student)
@@ -90,6 +90,7 @@ def update_student(id):
                 student.last_name = update_student_form.last_name.data.title()
                 student.birthday = update_student_form.birthday.data
                 student.classes = update_student_form.classes.data
+                student.last_modified = date.today()
 
                 try:
                     db.session.commit()

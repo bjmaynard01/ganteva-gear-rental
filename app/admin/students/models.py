@@ -14,6 +14,7 @@ ma = Marshmallow()
 class Student(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     create_date: so.Mapped[datetime.date] = so.mapped_column(sa.Date, index=True)
+    last_modified: so.Mapped[datetime.date] = so.mapped_column(sa.Date, index=True)
     first_name: so.Mapped[str] = so.mapped_column(sa.String(50), index=True)
     last_name: so.Mapped[str] = so.mapped_column(sa.String(80), index=True)
     birthday: so.Mapped[datetime.date] = so.mapped_column(sa.Date, index=True, nullable=True)
