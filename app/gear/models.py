@@ -31,10 +31,12 @@ class GearItem(db.Model):
     image: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
     img_thumb: so.Mapped[str] = so.mapped_column(sa.String(256), nullable=True)
     care_instructions: so.Mapped[str] = so.mapped_column(sa.Text, nullable=True)
-    qty: so.Mapped[int] = so.mapped_column(default=0)
+    qty: so.Mapped[str] = so.mapped_column(sa.Integer, default=0, nullable=True)
+    qty_available: so.Mapped[int] = so.mapped_column(sa.Integer, default=0, nullable=True)
+    qty_out: so.Mapped[int] = so.mapped_column(sa.Integer, default=0, nullable=True)
 
     def __repr__(self):
-        return f"Gear_Item('{self.id}', '{self.name}', '{self.qty}')"
+        return f"Gear_Item('{self.id}', '{self.name}', '{self.qty_available}')"
     
 
 class GearItemSchema(ma.Schema):

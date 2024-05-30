@@ -2,9 +2,20 @@
 
 {% block content %}
     <div class="row">
+    <div class="offset-by-four three columns">
         <h4>My Profile</h4>
     </div>
+    </div>
     <div class="row">
-        <p>Hi, {{ user.fname}} {{ user.lname }}</p>
+    <div class="offset-by-four five columns">
+        <p>Welcome to your homepage {{ user.fname }}.</p>
+            <ul>
+                <li>{{ user.fname }} {{ user.lname }}</li>
+                <li>{{user.email }}</li>
+                <li>{{ user.phone }}</li>
+                <li>Confirmed:{{ user.confirmed }}</li>
+                <li>Admin: {{ user.is_admin }}</li>
+            </ul>
+    </div>
     </div>
 {% endblock %}

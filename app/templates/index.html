@@ -9,15 +9,35 @@
         {% endif %}
     </div>
     {% if current_user.is_anonymous %}
-    <p>Please register <a href="{{ url_for('users.register') }}">here.</a></p>
+    <div class="row">
+        Welcome to the GanTeva Early Learning Center gear management app. If you already have an account here, please go 
+        and login <a href="{{ url_for('users.login') }}">here.</a>
+    <p>If you do not yet have an account with us, please go <a href="{{ url_for('users.register') }}">register here</a>.</p>
     {% else %}
-    <p>Welcome to your homepage {{ user.fname }}.</p>
-    <ul>
-        <li>{{ user.fname }} {{ user.lname }}</li>
-        <li>{{user.email }}</li>
-        <li>{{ user.phone }}</li>
-        <li>Confirmed:{{ user.confirmed }}</li>
-        <li>Admin: {{ user.is_admin }}</li>
-    </ul>
+        <div class="twelve columns">
+        <table class="twelve columns">
+        <th>Image</th>
+        <th>Name</th>
+        <th>Categories</th>
+        <th>Qty Available</th>
+        {% for item in items %}
+            <tr class="table-row">
+                <td>
+                    <a href="{{ url_for('static', filename='img/gear/' + item.image) }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ url_for('static', filename='img/gear/' + item.img_thumb) }}">
+                    </a>
+                </td>
+                <td>{{ item.name }}</td>
+                <td>
+                    {% for category in item.categories %}
+                        {{ category.name }}<br />
+                    {% endfor %}
+                </td>
+                <td>{{ item.qty_available }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
     {% endif %}
+    </div>
 {% endblock content %}

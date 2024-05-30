@@ -34,7 +34,7 @@
                 {% else %}
                 <td>N</td>
                 {% endif %}
-                <td>{{ item.qty }}</td>
+                <td>{{ item.qty_available }}</td>
                 <td>{{ item.categories.count() }}</td>
                 <td>
                     <a href="{{ url_for('admin_gear.update_item', id=item.id) }}"> 

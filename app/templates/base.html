@@ -51,10 +51,11 @@
             <div id="navbar" class="twelve columns">
                 <a href="{{ url_for('main.index') }}" class="navlink">Home</a>
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('users.user', id=current_user.id) }}" class="navlink">Profile</a>
+                <a href="{{ url_for('users.user', id=current_user.id) }}" class="navlink">My Account</a>
                 {% else %}
                 <a href="{{ url_for('users.login') }}" class="navlink">Login</a>
                 {% endif %}
+                <a href="">Gear</a>
             </div>
         </div>
 

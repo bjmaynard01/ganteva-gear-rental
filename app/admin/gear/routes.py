@@ -18,7 +18,7 @@ def gear_admin():
             total_items = 0
 
             for item in items:
-                total_items += item.qty
+                total_items += item.qty_available + item.qty_out
 
             return render_template('admin/gear/admin_gear.html', title='Gear Admin', items=items, total_items=total_items), 200
         else:
@@ -42,6 +42,7 @@ def add_gear():
                 gear_care = add_gear_form.care_instructions.data
                 gear_qty = add_gear_form.qty.data
                 gear_categories = add_gear_form.categories.data
+                gear_qty_out = 0
     
                 if add_gear_form.image.data:
                     picture_file, thumb_file = save_img(add_gear_form.image.data)
@@ -53,7 +54,7 @@ def add_gear():
                 
 
                 try:
-                    item = GearItem(name=gear_name, image=gear_image, img_thumb=gear_thumb, care_instructions=gear_care, qty=gear_qty)
+                    item = GearItem(name=gear_name, image=gear_image, img_thumb=gear_thumb, care_instructions=gear_care, qty=gear_qty, qty_out=gear_qty_out)
 
                     for category in gear_categories:
                         item.categories.append(category)
